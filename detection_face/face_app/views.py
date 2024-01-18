@@ -4,7 +4,11 @@ from face_app.models import *
 
 
 def index(request):
-    return render(request, 'face_app/index.html')
+    username = User.objects.all()
+    data = {
+        'username': username,
+    }
+    return render(request, 'face_app/index.html', data)
 
 
 def date_user(request, user_id):
