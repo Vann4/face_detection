@@ -5,6 +5,14 @@
     <title>Распознавание лиц</title>
 </head>
 <body>
-
+		{% for i in username %}
+			<div class="nav_button">
+					<ul>
+						<li>
+							<p>{{ i.username }}</p>
+						</li>
+					</ul>
+			</div><!--div class="nav_button"-->
+		{% endfor %}
 </body>
 </html>
