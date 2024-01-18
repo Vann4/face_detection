@@ -1,6 +1,14 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class test(models.Model):
-    title = models.CharField(max_length=255)
+class User(AbstractUser):
+    photo = models.ImageField(upload_to="img/profile/%Y/%m/%d/", blank=True, null=True, verbose_name="Фотография аватара")
 
+    def __str__(self):
+        return self.username
+
+
+class Data_user(models.Model):
+    photo = models.ImageField(upload_to="img/face/%Y/%m/%d/", verbose_name="Фотография лица")
+    users = models.ForeignKey(User, on_delete=models.CASCADE)
