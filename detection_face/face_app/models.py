@@ -12,3 +12,7 @@ class User(AbstractUser):
 class Data_user(models.Model):
     photo = models.ImageField(upload_to="img/face/%Y/%m/%d/", verbose_name="Фотография лица")
     users = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Данные пользователей'
+        verbose_name_plural = 'Данные пользователей'
