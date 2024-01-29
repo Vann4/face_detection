@@ -1,11 +1,18 @@
-from django.http import HttpResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse, reverse_lazy
 from face_app.models import *
 import face_recognition
 from PIL import Image, ImageDraw
 import pickle
 
-from face_app.forms import RegisterUserForm
+from face_app.forms import LoginUserForm
+
+
+# from face_app.forms import RegisterUserForm
 
 
 # def compare_faces(img1_path, img2_path):
@@ -74,7 +81,16 @@ def page_not_found(request, exception):
     return HttpResponse('<h1>Страница не найдена!</h1>')
 
 
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'face_app/login.html'
+    extra_context = {'title': "Авторизация"}
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+
 def registration(request):
-    form = RegisterUserForm()
+    # form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
 
