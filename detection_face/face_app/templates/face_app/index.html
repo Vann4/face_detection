@@ -6,6 +6,11 @@
 
 <main>
     <h1>О нас:</h1>
+    {% if context.welcome_text %}
+        {{ context.welcome_text }}
+    {% elif context.sorry_text %}
+        {{ context.sorry_text }}
+    {% endif %}
 </main>
 
 {% endblock main %}
