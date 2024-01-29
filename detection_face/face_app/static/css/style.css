@@ -59,6 +59,10 @@ a {
 	text-decoration: none;
 }
 
+li {
+  list-style-type: none;
+}
+
 main{
 	width: 100%;
 	display: flex;
