@@ -1,0 +1,16 @@
+{% extends 'face_app/base.html' %}
+ 
+{% block main %}
+
+<main>
+    <div class="content">
+        <h1>Добро пожаловать!</h1>
+
+        <p>Вы успешно зарегистрировались на сайте! Для входа в систему необходимо авторизоваться по этой <a href="{% url 'login' %}">ссылке</a></p>
+    </div>
+
+</main>
+
+{% endblock main %}
+
+{% block footer %} {% endblock footer %}

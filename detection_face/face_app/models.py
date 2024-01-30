@@ -3,7 +3,8 @@ from django.db import models
 
 
 class User(AbstractUser):
-    photo = models.ImageField(upload_to="img/profile/%Y/%m/%d/", blank=True, null=True, verbose_name="Фотография аватара")
+    # photo = models.ImageField(upload_to="img/profile/%Y/%m/%d/", blank=True, null=True, verbose_name="Фотография аватара")
+    nickname = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.username
