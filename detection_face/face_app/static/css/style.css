@@ -60,7 +60,9 @@ a {
 }
 
 li {
-  list-style-type: none;
+    color: #FFEDBC;
+    transition: 0.5s;
+    list-style-type: none;
 }
 
 main{
@@ -93,7 +95,7 @@ main h1{
     font-size: 1.1em;
 }
 
-.submit {
+.submit{
     width: 30%;
     padding: 8px 14px;
     font-size: 1em;
@@ -103,16 +105,18 @@ main h1{
 	box-shadow: inset 0px 20px 20px #ffffff;
 	cursor: pointer;
 }
-.submit:hover {
+
+.submit:hover{
 	box-shadow: inset 0px -20px 20px #ffffff;
 }
-.submit:active {
+
+.submit:active{
 	margin-top: 1px;
 	margin-bottom: -1px;
 	zoom: 1;
 }
-.submit:focus
-{
+
+.submit:focus{
 	outline:none;
 }
 
