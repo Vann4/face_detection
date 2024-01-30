@@ -1,15 +1,13 @@
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import render
-from django.urls import reverse, reverse_lazy
-from face_app.models import *
+from django.urls import reverse_lazy
+from .models import *
 import face_recognition
 from PIL import Image, ImageDraw
 import pickle
 
-from face_app.forms import LoginUserForm
+from .forms import LoginUserForm, RegisterUserForm
 
 
 # from face_app.forms import RegisterUserForm
@@ -91,6 +89,14 @@ class LoginUser(LoginView):
 
 
 def registration(request):
-    # form = RegisterUserForm()
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)  # создание объекта без сохранения в БД
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+            return render(request, 'face_app/registration_done.html')
+    else:
+        form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
 
