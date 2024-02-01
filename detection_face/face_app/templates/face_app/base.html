@@ -15,6 +15,16 @@
 
 {% block header %}
 
+<div class="popup_feedback">
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <p><button type="submit">Отправить</button></p>
+    </form>
+
+</div> <!-- class="popup_feedback" -->
+
 <header>
     <div class="logo">
     	<img src="{% static 'img/logo.png' %}" alt="">
@@ -22,7 +32,7 @@
 
     <div class="menu">
         <a href="{% url 'index' %}">Главная</a>
-        <a href="#">Обратная связь</a>
+        <a id="popup_feedback">Обратная связь</a>
         <a href="#">Загрузить изображения</a>
         <a href="#">Сравнить изображения</a>
     </div><!-- class="menu" -->
