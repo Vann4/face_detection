@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 
+from .models import Feedback
+
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form-input'}))
@@ -37,3 +39,11 @@ class RegisterUserForm(forms.ModelForm):
         if get_user_model().objects.filter(email=email).exists():
             raise forms.ValidationError("Такой E-mail уже существует!")
         return email
+
+
+class FeedbackForm(forms.ModelForm):
+    descriptions = forms.CharField(label='Описание', widget=forms.TextInput(attrs={'class': 'form-input'}))
+
+    class Meta:
+        model = Feedback()
+        fields = ['descriptions']
