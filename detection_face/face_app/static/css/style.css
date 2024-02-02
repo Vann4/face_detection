@@ -85,26 +85,16 @@ main h1{
 }
 
 .popup_feedback{
-    display: none;
-    width: 23%;
-    margin: 10% 0% 20% 42%;
+    width: 10%;
+    height: 100px;
+    display: block;
     position: fixed;
-    background-color: white;
-    box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 0.7);
+    margin: 10% 0% 20% 50%;
     z-index: 9999;
 }
 
 #popup_feedback{
     cursor:pointer
-}
-
-.popup_feedback_form{
-    width: 100%;
-    margin: 20px 0px 0px 10%;
-}
-
-.display_none{
-    display: none;
 }
 
 .content{
