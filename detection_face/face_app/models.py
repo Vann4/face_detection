@@ -17,3 +17,12 @@ class Data_user(models.Model):
     class Meta:
         verbose_name = 'Данные пользователей'
         verbose_name_plural = 'Данные пользователей'
+
+
+class Feedback(models.Model):
+    descriptions = models.TextField()
+    users_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Обратная связь'
+        verbose_name_plural = 'Обратная связь'

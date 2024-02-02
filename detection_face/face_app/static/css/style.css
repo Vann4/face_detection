@@ -59,9 +59,13 @@ a {
 	text-decoration: none;
 }
 
-li {
+.menu li,
+.auth li{
     color: #FFEDBC;
     transition: 0.5s;
+}
+
+li{
     list-style-type: none;
 }
 
@@ -80,6 +84,19 @@ main h1{
 	margin: 1% 0px 1% 0px;
 }
 
+.popup_feedback{
+    width: 10%;
+    height: 100px;
+    display: block;
+    position: fixed;
+    margin: 25% 50%;
+    z-index: 9999;
+}
+
+#popup_feedback{
+    cursor:pointer
+}
+
 .content{
     width: 94%;
     height: auto;
@@ -88,6 +105,10 @@ main h1{
 
 .content p{
     margin: 0px;
+}
+
+.bx-wrapper .bx-pager {
+    padding-top: 15px !important;
 }
 
 .form-input{
