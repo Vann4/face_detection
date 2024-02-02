@@ -15,12 +15,14 @@
 
 {% block popup %}
 
-<div class="popup_feedback">
+<div class="popup_feedback" id="popup_feedback_class">
 
-    <form method="post">
+    <form class="popup_feedback_form" method="post">
         {% csrf_token %}
-        <p><label for="id_descriptions">Описание:</label></p>
-        <p><input type="text" name="descriptions" class="form-input" required id="id_descriptions"></p>
+        <div id="close-button">Х</div>
+        <h2>Обратная связь с разботчиком</h2>
+        <label for="id_descriptions">Описание:</label>
+        <input type="text" name="descriptions" class="form-input" required id="id_descriptions">
 
         <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
 
@@ -67,5 +69,10 @@
 
 {% endblock footer %}
 
+{% block scripts %}
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% endblock scripts %}
 </body>
 </html>
