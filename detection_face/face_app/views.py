@@ -63,21 +63,13 @@ def index(request):
     # else:
     #     context['sorry_text'] = "Sorry, not today..."
 
-    # if request.method == "POST":
-    #     form = FeedbackForm(request.POST)
-    #     if form.is_valid():
-    #         feedback = form.save(commit=False)  # создание объекта без сохранения в БД
-    #         feedback.save()
-    # else:
-    #     form = FeedbackForm()
-
-        if request.method == 'POST':
-            form = PartsForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('../books')
-        else:
-            form = PartsForm()
+    if request.method == "POST":
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False) # создание объекта без сохранения в БД
+            feedback.save()
+    else:
+        form = FeedbackForm()
 
     data = {
         'username': username,
@@ -85,7 +77,7 @@ def index(request):
         # 'context': context,
         # 'aa': aa,
     }
-    return render(request, 'face_app/index.html', data, )
+    return render(request, 'face_app/index.html', data)
 
 
 def date_user(request, user_id):
@@ -116,14 +108,3 @@ def registration(request):
     else:
         form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
-
-
-def popup_feedback(request):
-    if request.method == "POST":
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            feedback = form.save(commit=False)  # создание объекта без сохранения в БД
-            feedback.save()
-    else:
-        form = FeedbackForm()
-    return render(request, 'face_app/index.html', {'form': form})
