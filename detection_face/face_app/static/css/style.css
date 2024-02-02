@@ -89,7 +89,7 @@ main h1{
     height: 100px;
     display: block;
     position: fixed;
-    margin: 25% 50%;
+    margin: 10% 0% 20% 50%;
     z-index: 9999;
 }
 
