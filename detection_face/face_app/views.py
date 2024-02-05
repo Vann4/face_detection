@@ -10,9 +10,6 @@ import pickle
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm
 
 
-# from face_app.forms import RegisterUserForm
-
-
 # def compare_faces(img1_path, img2_path):
 #     img1 = face_recognition.load_image_file(img1_path)
 #     img1_encodings = face_recognition.face_encodings(img1)[0]
@@ -22,12 +19,12 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm
 #     img2_encodings = face_recognition.face_encodings(img2)[0]
 #
 #     result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-#     # print(result)
-#
-#     if result[0]:
-#         print("Welcome to the club! :*")
-#     else:
-#         print("Sorry, not today... Next!")
+#     return result[0]
+
+# if result[0]:
+#     print("Welcome to the club! :*")
+# else:
+#     print("Sorry, not today... Next!")
 
 
 def index(request):
@@ -66,7 +63,7 @@ def index(request):
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
-            feedback = form.save(commit=False) # создание объекта без сохранения в БД
+            feedback = form.save(commit=False)  # создание объекта без сохранения в БД
             feedback.save()
     else:
         form = FeedbackForm()
@@ -78,10 +75,6 @@ def index(request):
         # 'aa': aa,
     }
     return render(request, 'face_app/index.html', data)
-
-
-def date_user(request, user_id):
-    return render(request, 'face_app/date.html')
 
 
 def page_not_found(request, exception):
@@ -102,9 +95,14 @@ def registration(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)  # создание объекта без сохранения в БД
+            # user.username = compare_faces("face_app/dataset/regina_1.jpg", "face_app/dataset/regina_2.jpg")
             user.set_password(form.cleaned_data['password'])
             user.save()
             return render(request, 'face_app/registration_done.html')
     else:
         form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
+
+
+def upload_face(request):
+    return render(request, 'face_app/upload_face.html')
