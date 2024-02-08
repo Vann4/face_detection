@@ -7,28 +7,29 @@ import face_recognition
 from PIL import Image, ImageDraw
 import pickle
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm
-
-
-# def compare_faces(img1_path, img2_path):
-#     img1 = face_recognition.load_image_file(img1_path)
-#     img1_encodings = face_recognition.face_encodings(img1)[0]
-#     # print(img1_encodings)
-#
-#     img2 = face_recognition.load_image_file(img2_path)
-#     img2_encodings = face_recognition.face_encodings(img2)[0]
-#
-#     result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-#     return result[0]
-
-# if result[0]:
-#     print("Welcome to the club! :*")
-# else:
-#     print("Sorry, not today... Next!")
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm
 
 
 def index(request):
     username = User.objects.all()
+
+    # def extracting_faces(img_path):
+    #     count = 0
+    #     faces = face_recognition.load_image_file(img_path)
+    #     faces_locations = face_recognition.face_locations(faces)
+    #
+    #     for face_location in faces_locations:
+    #         top, right, bottom, left = face_location
+    #
+    #         face_img = faces[top:bottom, left:right]
+    #         pil_img = Image.fromarray(face_img)
+    #         pil_img.save(f"face_app/dataset/{count}_face_img.jpg")
+    #         count += 1
+    #
+    #     print(f"Found {count} face(s) in this photo")
+    #
+    # print(extracting_faces("face_app/dataset/regina_2.jpg"))
+
     # # print(compare_faces("dataset/regina_1.jpg", "dataset_from_video/regina_2.jpg"))
     # img1 = face_recognition.load_image_file("face_app/dataset/regina_1.jpg")
     # img1 = face_recognition.load_image_file("face_app/dataset/stat.png")
@@ -96,6 +97,8 @@ def registration(request):
         if form.is_valid():
             user = form.save(commit=False)  # создание объекта без сохранения в БД
             # user.username = compare_faces("face_app/dataset/regina_1.jpg", "face_app/dataset/regina_2.jpg")
+            # data = request.POST.get('email', None)
+            # print(data)
             user.set_password(form.cleaned_data['password'])
             user.save()
             return render(request, 'face_app/registration_done.html')
@@ -104,5 +107,13 @@ def registration(request):
     return render(request, 'face_app/registration.html', {'form': form})
 
 
-def upload_face(request):
-    return render(request, 'face_app/upload_face.html')
+def working_with_images(request):
+    if request.method == "POST":
+        form = TrimmingPhotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            face = form.save(commit=False)  # создание объекта без сохранения в БД
+            face.save()
+            return render(request, 'face_app/working_with_images.html')
+    else:
+        form = TrimmingPhotoForm()
+    return render(request, 'face_app/working_with_images.html', {'form': form})
