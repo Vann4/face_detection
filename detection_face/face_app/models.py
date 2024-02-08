@@ -9,13 +9,13 @@ class User(AbstractUser):
         return self.username
 
 
-class Data_user(models.Model):
-    photo = models.ImageField(upload_to="img/face/%Y/%m/%d/", verbose_name="Фотография лица")
-    users = models.ForeignKey(User, on_delete=models.CASCADE)
+class FaceTrimUser(models.Model):
+    face_photo = models.ImageField(upload_to="face_trim/%Y/%m/%d/", verbose_name="Фотография лица")
+    users_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Данные пользователей'
-        verbose_name_plural = 'Данные пользователей'
+        verbose_name = 'Обрезанная фотография пользователя'
+        verbose_name_plural = 'Обрезанные фотографии пользователей'
 
 
 class Feedback(models.Model):
