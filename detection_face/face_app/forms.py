@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 
-from .models import Feedback
+from .models import Feedback, FaceTrimUser
 
 
 class LoginUserForm(AuthenticationForm):
@@ -47,3 +47,9 @@ class FeedbackForm(forms.ModelForm):
     class Meta:
         model = Feedback
         fields = ['descriptions', 'users_id']
+
+
+class TrimmingPhotoForm(forms.ModelForm):
+    class Meta:
+        model = FaceTrimUser
+        fields = ['face_photo', 'users_id']
