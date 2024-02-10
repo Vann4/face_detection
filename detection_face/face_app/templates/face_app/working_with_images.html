@@ -13,6 +13,9 @@
             <p><tr><th><label for="face_photo">Изображение лица: </label></th><td><input type="file" name="face_photo" required id="face_photo"></td></tr><p>
             <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
             <p><button type="submit">Обрезать</button></p>
+            {% for i in face_user %}
+                <img src="/static/img/face_trim/{{i.face_photo}}" alt="">
+            {% endfor %}
         </form>
     </div>
 </main>
