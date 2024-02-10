@@ -13,23 +13,6 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 def index(request):
     username = User.objects.all()
 
-    # def extracting_faces(img_path):
-    #     count = 0
-    #     faces = face_recognition.load_image_file(img_path)
-    #     faces_locations = face_recognition.face_locations(faces)
-    #
-    #     for face_location in faces_locations:
-    #         top, right, bottom, left = face_location
-    #
-    #         face_img = faces[top:bottom, left:right]
-    #         pil_img = Image.fromarray(face_img)
-    #         pil_img.save(f"face_app/dataset/{count}_face_img.jpg")
-    #         count += 1
-    #
-    #     print(f"Found {count} face(s) in this photo")
-    #
-    # print(extracting_faces("face_app/dataset/regina_2.jpg"))
-
     # # print(compare_faces("dataset/regina_1.jpg", "dataset_from_video/regina_2.jpg"))
     # img1 = face_recognition.load_image_file("face_app/dataset/regina_1.jpg")
     # img1 = face_recognition.load_image_file("face_app/dataset/stat.png")
@@ -108,12 +91,37 @@ def registration(request):
 
 
 def working_with_images(request):
+    face_user = FaceTrimUser.objects.all()
     if request.method == "POST":
         form = TrimmingPhotoForm(request.POST, request.FILES)
         if form.is_valid():
             face = form.save(commit=False)  # создание объекта без сохранения в БД
-            face.save()
+
+            count = 0
+            faces = face_recognition.load_image_file(face.face_photo)
+            faces_locations = face_recognition.face_locations(faces)
+
+            # face.face_photo = f"{count}_{face.face_photo}"
+            face_trim = f"{face.face_photo}"
+
+            for face_location in faces_locations:
+                top, right, bottom, left = face_location
+
+                face_img = faces[top:bottom, left:right]
+                pil_img = Image.fromarray(face_img)
+                pil_img.save(f"face_app/static/img/face_trim/{count}_{face_trim}")
+                face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
+                print(face_user_photo)
+                face_user_photo.save()
+                count += 1
+
             return render(request, 'face_app/working_with_images.html')
     else:
         form = TrimmingPhotoForm()
-    return render(request, 'face_app/working_with_images.html', {'form': form})
+
+    data = {
+        'face_user': face_user,
+        'form': form,
+    }
+
+    return render(request, 'face_app/working_with_images.html', data)
