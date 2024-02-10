@@ -124,11 +124,11 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "face_app/static"),
+   os.path.join(BASE_DIR, "face_app/static")
 ]
 
-MEDIA_URL = '/img/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'img/')
+MEDIA_URL = 'img/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'face_app/static/img/face_trim')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
