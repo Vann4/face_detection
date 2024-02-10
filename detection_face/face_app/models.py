@@ -10,7 +10,7 @@ class User(AbstractUser):
 
 
 class FaceTrimUser(models.Model):
-    face_photo = models.ImageField(upload_to="face_trim/%Y/%m/%d/", verbose_name="Фотография лица")
+    face_photo = models.ImageField(verbose_name="Фотография лица")
     users_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
