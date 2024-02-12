@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from .models import *
 import face_recognition
@@ -11,29 +12,21 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 
 
 def index(request):
-    username = User.objects.all()
+    users = User.objects.all()
 
-    # # print(compare_faces("dataset/regina_1.jpg", "dataset_from_video/regina_2.jpg"))
-    # img1 = face_recognition.load_image_file("face_app/dataset/regina_1.jpg")
-    # img1 = face_recognition.load_image_file("face_app/dataset/stat.png")
-    # img1_encodings = face_recognition.face_encodings(img1)[0]
-    # # print(img1_encodings)
-    #
-    # img2 = face_recognition.load_image_file("face_app/dataset/regina_2.jpg")
-    # img2_encodings = face_recognition.face_encodings(img2)[0]
-    #
-    # result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-    # print(result)
+    img1 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
+    img1_encodings = face_recognition.face_encodings(img1)[0]
 
-    # # print(img2_encodings)
-    #
-    # result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-    # # print(result)
-    #
-    # if result[0]:
-    #     print("Welcome to the club! :*")
-    # else:
-    #     print("Sorry, not today... Next!")
+    img2 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
+    img2_encodings = face_recognition.face_encodings(img2)[0]
+
+    result = face_recognition.compare_faces([img1_encodings], img2_encodings)
+    print(result)
+
+    if result[0]:
+        print("Добро пожаловать!!!")
+    else:
+        print("Извините, не сегодня")
 
     # context = {}
 
@@ -53,7 +46,7 @@ def index(request):
         form = FeedbackForm()
 
     data = {
-        'username': username,
+        'users': users,
         'form': form,
         # 'context': context,
         # 'aa': aa,
@@ -90,38 +83,42 @@ def registration(request):
     return render(request, 'face_app/registration.html', {'form': form})
 
 
-def working_with_images(request):
-    face_user = FaceTrimUser.objects.all()
-    if request.method == "POST":
-        form = TrimmingPhotoForm(request.POST, request.FILES)
-        if form.is_valid():
-            face = form.save(commit=False)  # создание объекта без сохранения в БД
+def working_with_images(request, users_id):
+    face_user = FaceTrimUser.objects.filter(users_id=request.user.id)
+    if users_id == request.user.id:
+        if request.method == "POST":
+            form = TrimmingPhotoForm(request.POST, request.FILES)
+            if form.is_valid():
+                face = form.save(commit=False)  # создание объекта без сохранения в БД
 
-            count = 0
-            faces = face_recognition.load_image_file(face.face_photo)
-            faces_locations = face_recognition.face_locations(faces)
+                count = 0
+                faces = face_recognition.load_image_file(face.face_photo)
+                faces_locations = face_recognition.face_locations(faces)
 
-            # face.face_photo = f"{count}_{face.face_photo}"
-            face_trim = f"{face.face_photo}"
+                face_trim = f"{face.face_photo}"
+                print(face_trim)
 
-            for face_location in faces_locations:
-                top, right, bottom, left = face_location
+                for face_location in faces_locations:
+                    top, right, bottom, left = face_location
 
-                face_img = faces[top:bottom, left:right]
-                pil_img = Image.fromarray(face_img)
-                pil_img.save(f"face_app/static/img/face_trim/{count}_{face_trim}")
-                face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
-                print(face_user_photo)
-                face_user_photo.save()
-                count += 1
+                    face_img = faces[top:bottom, left:right]
+                    pil_img = Image.fromarray(face_img)
+                    pil_img.save(f"face_app/media/{count}_{face_trim}")
+                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
+                    print(face_user_photo)
+                    face_user_photo.save()
+                    count += 1
 
-            return render(request, 'face_app/working_with_images.html')
+                # return render(request, 'face_app/working_with_images.html')
+                return redirect('index')
+        else:
+            form = TrimmingPhotoForm()
+
+        data = {
+            'face_user': face_user,
+            'form': form,
+        }
+
+        return render(request, 'face_app/working_with_images.html', data)
     else:
-        form = TrimmingPhotoForm()
-
-    data = {
-        'face_user': face_user,
-        'form': form,
-    }
-
-    return render(request, 'face_app/working_with_images.html', data)
+        raise PermissionDenied
