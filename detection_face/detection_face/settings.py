@@ -127,8 +127,8 @@ STATICFILES_DIRS = [
    os.path.join(BASE_DIR, "face_app/static")
 ]
 
-MEDIA_URL = 'img/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'face_app/static/img/face_trim')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'face_app/media/')
+MEDIA_URL = '/media/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
