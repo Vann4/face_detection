@@ -10,7 +10,10 @@
         <div class="img_trim">
             <p class="working_with_images_p">Ваши изображения:</p>
             {% for i in face_user %}
-                <img src="{{i.face_photo.url}}" alt="">
+                {% if i.face_user %}
+                    <img src="{{i.face_photo.url}}" alt="">
+                {% else %}
+                {% endif %}
             {% endfor %}
         </div>
 
