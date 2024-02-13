@@ -92,7 +92,7 @@ main h1{
     margin: 10% 0% 20% 42%;
     background-color: white;
     box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 0.7);
-    z-index: 9999;
+    z-index: 10000;
 }
 
 #popup_feedback{
@@ -124,15 +124,7 @@ main h1{
     margin: 0px;
 }
 
-.img_trim{
-    display: flex;
-    flex-wrap: wrap;
-}
 
-.img_trim img{
-    width: 19%;
-    margin: 1% 1% 1% 0%;
-}
 
 .bx-wrapper,
 .bx-pager{
@@ -178,9 +170,45 @@ main h1{
 	outline:none;
 }
 
+.form_trim{
+    margin-bottom: 1.5%;
+}
+
+.img_trim{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+
+.img_trim img{
+    width: 100%;
+}
+
 .working_with_images_p{
     color: black;
     font-size: 1.5em;
+}
+
+.working_with_images_p_images{
+    width: 100%;
+    color: black;
+    font-size: 1.5em;
+}
+
+table {
+    border-collapse: collapse;
+    border: 2px solid black;
+    width: 100%;
+}
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+th:first-child, td:first-child {
+    border-right: none;
+    width: 250px; /* Ширина для столбца с изображениями */
 }
 
 footer{
