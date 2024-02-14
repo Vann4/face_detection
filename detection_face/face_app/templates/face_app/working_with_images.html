@@ -17,6 +17,19 @@
             </form>
         </div><!-- class="form_trim" -->
 
+        <div class="age_gender_race">
+            <p class="working_with_images_p">Узнать примерный возраст, гендер и рассу:</p>
+            <form class="working_with_images_form" method="post">
+                {% csrf_token %}
+                <select name="selected_image">
+                    {% for i in face_user %}
+                        <option value="{{ i.id }}">{{ i.face_photo }}</option>
+                    {% endfor %}
+                </select>
+                <p><button type="submit">Узнать</button></p>
+            </form>
+        </div><!-- class="form_trim" -->
+
         <div class="img_trim">
             <p class="working_with_images_p_images">Ваши изображения:</p>
             <div class="table_image_trim">
