@@ -43,6 +43,31 @@
 {% block header %}
 
 <header>
+
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar__wrap">
+                <div class="hamb">
+                    <div class="hamb__field" id="hamb">
+                        <span class="bar"></span> <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </div>
+                <!-- <a href="#" class="logo" id="logo">Logo</a> -->
+                <img src="{% static 'img/logo.png' %}" alt="">
+                <ul class="menu" id="menu">
+                    <li><a href="{% url 'index' %}">Главная</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a id="popup_feedback">Обратная связь</a></li>
+                        <li><a href="{% url 'working_with_images' users_id=user.id %}">Работа с изображениями</a></li>
+                    {% else %}
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="popup" id="popup"></div>
+
     <div class="logo">
     	<img src="{% static 'img/logo.png' %}" alt="">
     </div> <!-- class="logo" -->
@@ -53,7 +78,6 @@
             <a id="popup_feedback">Обратная связь</a>
             <a href="{% url 'working_with_images' users_id=user.id %}">Работа с изображениями</a>
         {% else %}
-
         {% endif %}
     </div><!-- class="menu" -->
 

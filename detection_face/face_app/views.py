@@ -14,19 +14,19 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 def index(request):
     users = User.objects.all()
 
-    img1 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
-    img1_encodings = face_recognition.face_encodings(img1)[0]
-
-    img2 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
-    img2_encodings = face_recognition.face_encodings(img2)[0]
-
-    result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-    print(result)
-
-    if result[0]:
-        print("Добро пожаловать!!!")
-    else:
-        print("Извините, не сегодня")
+    # img1 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
+    # img1_encodings = face_recognition.face_encodings(img1)[0]
+    #
+    # img2 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
+    # img2_encodings = face_recognition.face_encodings(img2)[0]
+    #
+    # result = face_recognition.compare_faces([img1_encodings], img2_encodings)
+    # print(result)
+    #
+    # if result[0]:
+    #     print("Добро пожаловать!!!")
+    # else:
+    #     print("Извините, не сегодня")
 
     # context = {}
 
@@ -84,7 +84,7 @@ def registration(request):
 
 
 def working_with_images(request, users_id):
-    face_user = FaceTrimUser.objects.filter(users_id=request.user.id)
+    face_user = FaceTrimUser.objects.filter(users_id=users_id)
     if users_id == request.user.id:
         if request.method == "POST":
             form = TrimmingPhotoForm(request.POST, request.FILES)
@@ -96,7 +96,6 @@ def working_with_images(request, users_id):
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
-                print(face_trim)
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
@@ -108,9 +107,6 @@ def working_with_images(request, users_id):
                     print(face_user_photo)
                     face_user_photo.save()
                     count += 1
-
-                # return render(request, 'face_app/working_with_images.html')
-                return redirect('index')
         else:
             form = TrimmingPhotoForm()
 
