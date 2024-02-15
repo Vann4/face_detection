@@ -8,7 +8,7 @@ import face_recognition
 from PIL import Image, ImageDraw
 import pickle
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
 
 
 def index(request):
@@ -84,12 +84,16 @@ def registration(request):
 
 
 def working_with_images(request, users_id):
+    global aa
     face_user = FaceTrimUser.objects.filter(users_id=users_id)
+    form1 = TrimmingPhotoForm(request.POST, request.FILES or None)
+    form2 = AgeGenderRaceForm(request.POST)
+
     if users_id == request.user.id:
         if request.method == "POST":
             form = TrimmingPhotoForm(request.POST, request.FILES)
-            if form.is_valid():
-                face = form.save(commit=False)  # создание объекта без сохранения в БД
+            if form1.is_valid():
+                face = form1.save(commit=False)  # создание объекта без сохранения в БД
 
                 count = 0
                 faces = face_recognition.load_image_file(face.face_photo)
@@ -104,15 +108,22 @@ def working_with_images(request, users_id):
                     pil_img = Image.fromarray(face_img)
                     pil_img.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
-                    print(face_user_photo)
                     face_user_photo.save()
                     count += 1
+            if form2.is_valid():
+                # print(form2.cleaned_data)
+                name = form2.cleaned_data['path']
+                # print(name)
+                aa = {'a': name}
         else:
-            form = TrimmingPhotoForm()
+            form1 = TrimmingPhotoForm()
+            form2 = AgeGenderRaceForm()
 
         data = {
             'face_user': face_user,
-            'form': form,
+            'form1': form1,
+            'form2': form2,
+            'aa': aa,
         }
 
         return render(request, 'face_app/working_with_images.html', data)

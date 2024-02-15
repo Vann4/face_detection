@@ -53,3 +53,7 @@ class TrimmingPhotoForm(forms.ModelForm):
     class Meta:
         model = FaceTrimUser
         fields = ['face_photo', 'users_id']
+
+
+class AgeGenderRaceForm(forms.Form):
+    path = forms.CharField()
