@@ -14,29 +14,29 @@
 <body>
 
 {% block popup %}
+<div class="display_none_container_popup_feedback" id="container_popup_feedback">
+    <div class="popup_feedback" id="popup_feedback_class">
 
-<div class="popup_feedback" id="popup_feedback_class">
+        <form class="popup_feedback_form" method="post">
+            {% csrf_token %}
+            <div id="close-button">
+                <svg width="23" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.09082 0.03125L22.9999 22.0294L20.909 24.2292L-8.73579e-05 2.23106L2.09082 0.03125Z" fill="#333333" />
+                    <path d="M0 22.0295L20.9091 0.0314368L23 2.23125L2.09091 24.2294L0 22.0295Z" fill="#333333" />
+                </svg>
+            </div>
 
-    <form class="popup_feedback_form" method="post">
-        {% csrf_token %}
-        <div id="close-button">
-            <svg width="23" height="25" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M2.09082 0.03125L22.9999 22.0294L20.909 24.2292L-8.73579e-05 2.23106L2.09082 0.03125Z" fill="#333333" />
-                <path d="M0 22.0295L20.9091 0.0314368L23 2.23125L2.09091 24.2294L0 22.0295Z" fill="#333333" />
-            </svg>
-        </div>
+            <h2>Обратная связь с разботчиком</h2>
+            <label for="id_descriptions">Описание:</label>
+            <input type="text" name="descriptions" class="form-input" required id="id_descriptions">
 
-        <h2>Обратная связь с разботчиком</h2>
-        <label for="id_descriptions">Описание:</label>
-        <input type="text" name="descriptions" class="form-input" required id="id_descriptions">
+            <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
 
-        <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
+            <p><button type="submit" class="submit">Отправить</button></p>
+        </form>
 
-        <p><button type="submit">Отправить</button></p>
-    </form>
-
-</div> <!-- class="popup_feedback" -->
-
+    </div> <!-- class="popup_feedback" -->
+</div>
 {% endblock popup %}
 
 
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <!-- <a href="#" class="logo" id="logo">Logo</a> -->
-                <img src="{% static 'img/logo.png' %}" alt="">
+                <img src="{% static 'img/logo.png' %}" alt="Логотип">
                 <ul class="menu" id="menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
