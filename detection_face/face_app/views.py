@@ -84,14 +84,14 @@ def registration(request):
 
 
 def working_with_images(request, users_id):
-    global aa
+    a = ''
     face_user = FaceTrimUser.objects.filter(users_id=users_id)
     form1 = TrimmingPhotoForm(request.POST, request.FILES or None)
     form2 = AgeGenderRaceForm(request.POST)
 
     if users_id == request.user.id:
         if request.method == "POST":
-            form = TrimmingPhotoForm(request.POST, request.FILES)
+            # form = TrimmingPhotoForm(request.POST, request.FILES)
             if form1.is_valid():
                 face = form1.save(commit=False)  # создание объекта без сохранения в БД
 
@@ -114,7 +114,7 @@ def working_with_images(request, users_id):
                 # print(form2.cleaned_data)
                 name = form2.cleaned_data['path']
                 # print(name)
-                aa = {'a': name}
+                a = name
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
@@ -123,7 +123,7 @@ def working_with_images(request, users_id):
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
-            'aa': aa,
+            'aa': a,
         }
 
         return render(request, 'face_app/working_with_images.html', data)

@@ -7,7 +7,7 @@ body{
 }
 
 header{
-	width: 100%;
+	width: 99vw;
 	height: 100px;
 	margin: 0px 0% 1% 0%;
 	display: flex;
@@ -17,19 +17,17 @@ header{
 
 .container {
   width: 100%;
-  max-width: 1000px;
   margin: 0 auto;
   height: 100%;
 }
 
 .navbar {
   position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
+  width: 99vw;
   height: 100px;
   border-radius: 8px;
   background: #75c5d0;
+  z-index: 10000;
 }
 
 .navbar__wrap {
@@ -73,11 +71,11 @@ header{
   display: flex;
   align-items: center;
   padding: 0 20px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #FFEDBC;
 }
 
 .navbar__wrap .menu > li > a:hover {
-  color: rgba(255, 255, 255, 1);
+  color: #FFBF40;
 }
 
 .logo{
@@ -91,6 +89,7 @@ header{
 .menu{
 	width: 74%;
 	display: flex;
+	padding: 0px;
     justify-content: space-evenly;
     align-items: center;
     font-size: 1.8em;
@@ -289,8 +288,7 @@ footer{
 }
 
 @media (max-width: 1000px) {
-  .navbar__wrap 
-  .menu {
+  .navbar__wrap .menu, .auth{
     display: none;
   }
 
@@ -315,6 +313,7 @@ footer{
 
   .popup {
     position: fixed;
+    flex-direction: column;
     top: 100px;
     left: -100%;
     width: 100%;
@@ -332,13 +331,16 @@ footer{
 
   .popup .menu {
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: start;
-    padding: 50px 0;
     overflow: auto;
+    flex-direction: column;
+  }
+
+  .popup .auth{
+    display: block;
+    width: 100%;
   }
 
   .popup .menu > li {
@@ -350,13 +352,32 @@ footer{
     display: flex;
     justify-content: center;
     padding: 20px 0;
-    font-size: 20px;
+    font-size: 0.9em;
     font-weight: bold;
     color: #3f3f3f;
   }
 
   .popup .menu > li > a:hover {
-    background-color: rgba(122, 82, 179, 0.1);
+    color: #FFBF40;
+    transition: 0.5s;
+  }
+
+  .popup .auth > li{
+    width: max-content;
+    margin: 0 auto;
+    font-weight: bold;
+    color: #3f3f3f;
+    font-size: 0.9em;
+  }
+
+  .popup .auth > li > a{
+    font-weight: bold;
+    color: #3f3f3f;
+  }
+
+  .popup .auth > li > a:hover {
+    color: #FFBF40;
+    transition: 0.5s;
   }
 
   .hamb__field.active .bar:nth-child(2) {
