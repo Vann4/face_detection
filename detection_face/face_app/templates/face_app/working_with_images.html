@@ -11,43 +11,55 @@
             <p class="working_with_images_p">Обрезать фото (оставить только лицо):</p>
             <form class="working_with_images_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p><tr><th><label for="face_photo">Изображение на котором есть лица: </label></th><td>
+                <p><tr><th><label for="face_photo">Загрузить изображение: </label></th><td>
                     <input type="file" name="face_photo" required id="face_photo"></td></tr><p>
                 <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
-                <p><button type="submit">Обрезать</button></p>
+                <p><button type="submit" class="submit">Обрезать</button></p>
             </form>
         </div><!-- class="form_trim" -->
 
         <div class="age_gender_race">
-            <p class="working_with_images_p">Узнать примерный возраст, гендер и рассу:</p>
+            <p class="working_with_images_p">Узнать примерный возраст, гендер, рассу и эмоцию:</p>
             <form class="working_with_images_form" method="post">
                 {% csrf_token %}
-                <select name="path">
-                    {% for i in face_user %}
-                        <option name="path" value="media/{{ i.face_photo }}">{{i.face_photo}}</option>
-                    {% endfor %}
-                </select>
-<!--                {{ form2.as_p }}-->
-                <p><button type="submit">Узнать</button></p>
-                {{aa}}
+                <div class="custom-select">
+                    <select name="path" class="select_face_photo">
+                        {% for i in face_user %}
+                            <option name="path" value="{{ i.face_photo }}">{{i.face_photo}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <p><button type="submit" class="submit">Узнать</button></p>
+<!--                {{ResultDeepAnalyze.age}} {{ResultDeepAnalyze.dominant_gender}} {{ResultDeepAnalyze.dominant_race}} {{ResultDeepAnalyze.dominant_emotion}}-->
+                <p>Название изображения: {{ path_img }}</p>
+                <p>Возраст: {{ ResultDeepAnalyze.age }}</p>
+                <p>Пол: {{ ResultDeepAnalyze.dominant_gender }}</p>
+                <p>Раса: {{ ResultDeepAnalyze.dominant_race }}</p>
+                <p>Эмоция: {{ ResultDeepAnalyze.dominant_emotion }}</p>
             </form>
         </div><!-- class="form_trim" -->
 
         <div class="img_trim">
             <p class="working_with_images_p_images">Ваши изображения:</p>
             <div class="table_image_trim">
-            {% for i in face_user %}
-                <table>
-                    <tr>
-                        <th>Изображение</th>
-                        <th>Путь до изображения</th>
-                    </tr> <!--ряд с ячейками заголовков-->
+
+                <table class="responsive-table">
+                    <thead>
+                        <tr>
+                            <th>Изображение</th>
+                            <th>Название изображения</th>
+                        </tr> <!--ряд с ячейками заголовков-->
+                    </thead>
+                    <tbody>
+                    {% for i in face_user %}
                     <tr>
                         <td><img src="{{i.face_photo.url}}" alt=""></td>
-                        <td><p>media/{{i.face_photo}}</p></td>
+                        <td><p>{{i.face_photo}}</p></td>
                     </tr> <!--ряд с ячейками тела таблицы-->
+                    {% endfor %}
+                    </tbody>
                 </table>
-            {% endfor %}
+
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->
     </div><!-- class="content" -->

@@ -7,6 +7,8 @@ from .models import *
 import face_recognition
 from PIL import Image, ImageDraw
 import pickle
+from pathlib import Path
+from deepface import DeepFace
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
 
@@ -84,7 +86,8 @@ def registration(request):
 
 
 def working_with_images(request, users_id):
-    a = ''
+    path_img = ''
+    ResultDeepAnalyze = {}
     face_user = FaceTrimUser.objects.filter(users_id=users_id)
     form1 = TrimmingPhotoForm(request.POST, request.FILES or None)
     form2 = AgeGenderRaceForm(request.POST)
@@ -100,6 +103,7 @@ def working_with_images(request, users_id):
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
+                print(face_trim)
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
@@ -110,11 +114,12 @@ def working_with_images(request, users_id):
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
                     count += 1
+
             if form2.is_valid():
-                # print(form2.cleaned_data)
-                name = form2.cleaned_data['path']
-                # print(name)
-                a = name
+                path_img = form2.cleaned_data['path']
+                image_path = Path(f"face_app/media/{path_img}")
+                DeepAnalyze = DeepFace.analyze(img_path=image_path, actions=['age', 'gender', 'race', 'emotion'], enforce_detection=False)
+                ResultDeepAnalyze = DeepAnalyze[0]
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
@@ -123,7 +128,8 @@ def working_with_images(request, users_id):
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
-            'aa': a,
+            'ResultDeepAnalyze': ResultDeepAnalyze,
+            'path_img': path_img,
         }
 
         return render(request, 'face_app/working_with_images.html', data)
