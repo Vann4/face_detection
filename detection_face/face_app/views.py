@@ -89,7 +89,7 @@ def working_with_images(request, users_id):
     path_img = ''
     ResultDeepAnalyze = {}
     face_user = FaceTrimUser.objects.filter(users_id=users_id)
-    form1 = TrimmingPhotoForm(request.POST, request.FILES or None)
+    form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
 
     if users_id == request.user.id:
@@ -110,7 +110,7 @@ def working_with_images(request, users_id):
 
                     face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
-                    pil_img.save(f"face_app/media/{count}_{face_trim}")
+                    pil_img.save(f"detection_face/face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
                     count += 1
