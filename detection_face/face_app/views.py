@@ -86,9 +86,10 @@ def registration(request):
 
 
 def working_with_images(request, users_id):
-    path_img = ''
-    ResultDeepAnalyze = {}
-    face_user = FaceTrimUser.objects.filter(users_id=users_id)
+    face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
+    print(face_user)
+    for obj in face_user:
+        print(obj)
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
 
@@ -103,14 +104,13 @@ def working_with_images(request, users_id):
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
-                print(face_trim)
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
 
                     face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
-                    pil_img.save(f"detection_face/face_app/media/{count}_{face_trim}")
+                    pil_img.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
                     count += 1
@@ -120,6 +120,22 @@ def working_with_images(request, users_id):
                 image_path = Path(f"face_app/media/{path_img}")
                 DeepAnalyze = DeepFace.analyze(img_path=image_path, actions=['age', 'gender', 'race', 'emotion'], enforce_detection=False)
                 ResultDeepAnalyze = DeepAnalyze[0]
+
+                gender_translation = {'Man': 'Мужчина', 'Woman': 'Женщина'}
+
+                race_translation = {'indian': 'Индейцы', 'Asian': 'Азиаты',
+                                    'latino hispanic': 'Латиноамериканцы', 'black': 'Африканцы',
+                                    'middle eastern': 'Средневосточ', 'white': 'Европейцы'}
+
+                emotion_translation = {'happy': 'Счастье', 'sad': 'Грусть',
+                                       'angry': 'Гнев', 'surprise': 'Удивление', 'fear': 'Страх',
+                                       'disgust': 'Отвращение', 'neutral': 'Нет эмоций'}
+
+                ResultDeepAnalyze['dominant_gender'] = gender_translation.get(ResultDeepAnalyze['dominant_gender'], ResultDeepAnalyze['dominant_gender'])
+                ResultDeepAnalyze['dominant_race'] = race_translation.get(ResultDeepAnalyze['dominant_race'], ResultDeepAnalyze['dominant_race'])
+                ResultDeepAnalyze['dominant_emotion'] = emotion_translation.get(ResultDeepAnalyze['dominant_emotion'], ResultDeepAnalyze['dominant_emotion'])
+
+                FaceTrimUser.objects.filter(users_id=users_id, face_photo=path_img).update(age=ResultDeepAnalyze['age'], dominant_gender=ResultDeepAnalyze['dominant_gender'], dominant_race=ResultDeepAnalyze['dominant_race'], dominant_emotion=ResultDeepAnalyze['dominant_emotion'])
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
@@ -128,8 +144,6 @@ def working_with_images(request, users_id):
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
-            'ResultDeepAnalyze': ResultDeepAnalyze,
-            'path_img': path_img,
         }
 
         return render(request, 'face_app/working_with_images.html', data)

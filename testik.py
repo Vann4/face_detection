@@ -7,21 +7,21 @@ from deepface import DeepFace
 # print(df[0]['dominant_gender'])
 # print(df[0]['dominant_race'])
 
-import face_recognition
-from PIL import Image
-
-count = 0
-img = f"nicole-wallace-and-gabriel-guevara_97.jpg"
-faces = face_recognition.load_image_file(img)
-faces_locations = face_recognition.face_locations(faces)
-
-for face_location in faces_locations:
-    top, right, bottom, left = face_location
-
-    face_img = faces[top:bottom, left:right]
-    pil_img = Image.fromarray(face_img)
-    pil_img.save(f"{count}_{img}")
-    count += 1
+# import face_recognition
+# from PIL import Image
+#
+# count = 0
+# img = f"nicole-wallace-and-gabriel-guevara_97.jpg"
+# faces = face_recognition.load_image_file(img)
+# faces_locations = face_recognition.face_locations(faces)
+#
+# for face_location in faces_locations:
+#     top, right, bottom, left = face_location
+#
+#     face_img = faces[top:bottom, left:right]
+#     pil_img = Image.fromarray(face_img)
+#     pil_img.save(f"{count}_{img}")
+#     count += 1
 
 # Загрузка модели VGG-Face
 # vggface_model = DeepFace.build_model('VGG-Face')
@@ -41,9 +41,9 @@ for face_location in faces_locations:
 import face_recognition
 
 # Load the jpg files into numpy arrays
-biden_image = face_recognition.load_image_file("biden.jpg")
-obama_image = face_recognition.load_image_file("obama.jpg")
-unknown_image = face_recognition.load_image_file("obama2.jpg")
+biden_image = face_recognition.load_image_file("biden.png")
+obama_image = face_recognition.load_image_file("obama.png")
+unknown_image = face_recognition.load_image_file("skala.jpg")
 
 # Get the face encodings for each face in each image file
 # Since there could be more than one face in each image, it returns a list of encodings.
@@ -68,3 +68,23 @@ print("Is the unknown face a picture of Biden? {}".format(results[0]))
 print("Is the unknown face a picture of Obama? {}".format(results[1]))
 print("Is the unknown face a new person that we've never seen before? {}".format(not True in results))
 
+# Для прямоугольника вокруг лица
+# import face_recognition
+# from PIL import Image, ImageDraw
+#
+#
+# def face_rec():
+#     gal_face_img = face_recognition.load_image_file("Katya.jpg")
+#     gal_face_location = face_recognition.face_locations(gal_face_img)
+#
+#     pil_img1 = Image.fromarray(gal_face_img)
+#     draw1 = ImageDraw.Draw(pil_img1)
+#
+#     for (top, right, bottom, left) in gal_face_location:
+#         draw1.rectangle(((left, top), (right, bottom)), outline=(255, 255, 0), width=4)
+#
+#     del draw1
+#     pil_img1.save("new_gal1.jpg")
+#
+#
+# face_rec()

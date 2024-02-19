@@ -11,11 +11,19 @@ class User(AbstractUser):
 
 class FaceTrimUser(models.Model):
     face_photo = models.ImageField(verbose_name="Фотография лица")
+    age = models.IntegerField(blank=True, null=True, verbose_name="Возраст")
+    dominant_gender = models.CharField(blank=True, null=True, max_length=10)
+    dominant_race = models.CharField(blank=True, null=True, max_length=100)
+    dominant_emotion = models.CharField(blank=True, null=True, max_length=100)
+    is_published = models.BooleanField(default=True)
     users_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Обрезанная фотография пользователя'
         verbose_name_plural = 'Обрезанные фотографии пользователей'
+
+    def __str__(self):
+        return self.face_photo.url
 
 
 class Feedback(models.Model):
@@ -25,3 +33,6 @@ class Feedback(models.Model):
     class Meta:
         verbose_name = 'Обратная связь'
         verbose_name_plural = 'Обратная связь'
+
+    def __str__(self):
+        return self.descriptions
