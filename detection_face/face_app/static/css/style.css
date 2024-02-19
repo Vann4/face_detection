@@ -9,16 +9,15 @@ body{
 header{
 	width: 99vw;
 	height: 100px;
-	margin: 0px 0% 1% 0%;
+	margin: 3px 0% 10px 0%;
 	display: flex;
 	border-radius: 8px;
-	background: #75c5d0;
 }
 
 .container {
-  width: 100%;
-  margin: 0 auto;
-  height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    height: 100%;
 }
 
 .img_slider{
@@ -32,60 +31,60 @@ header{
 }
 
 .navbar {
-  position: fixed;
-  width: 99vw;
-  height: 100px;
-  border-radius: 8px;
-  background: #75c5d0;
-  z-index: 10000;
+    position: fixed;
+    width: 99vw;
+    height: 100px;
+    border-radius: 8px;
+    background: #75c5d0;
+    z-index: 10000;
 }
 
 .navbar__wrap {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .hamb {
-  display: none;
+    display: none;
 }
 
 .popup {
-  display: none;
+    display: none;
 }
 
 .logo {
-  text-decoration: none;
-  color: #fff;
-  font-size: 20px;
-  font-weight: bold;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
 }
 
 .menu > li > a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .navbar__wrap .menu {
-  display: flex;
+    display: flex;
 }
 
 .navbar__wrap .menu > li {
-  display: flex;
-  align-items: stretch;
+    display: flex;
+    align-items: stretch;
 }
 
 .navbar__wrap .menu > li > a {
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
-  color: #FFEDBC;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: #FFEDBC;
 }
 
 .navbar__wrap .menu > li > a:hover {
-  color: #FFBF40;
+    color: #FFBF40;
 }
 
 .logo{
@@ -165,7 +164,7 @@ main h1{
 }
 
 .popup_feedback{
-    width: 500px;
+    width: 400px;
     background-color: white;
     box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 0.7);
 }
@@ -287,7 +286,6 @@ footer{
 	height: 50px;
 	background: #333;
 	border-radius: 10px;
-	/*margin: 0px 5% 0px 5%;*/
 }
 
 .text_footer{
@@ -299,29 +297,30 @@ footer{
 }
 
 .custom-select {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .custom-select:after {
-  content: '\25BC'; /* стрелочка вниз (▼) */
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
+    content: '\25BC'; /* стрелочка вниз (▼) */
+    position: absolute;
+    top: 20px;
+    right: 2px;
+    transform: translateY(-50%);
+    pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
 }
 
 .custom-select select {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  appearance: none; /* убираем стандартные стрелки */
+    cursor: pointer;
+    padding: 10px 20px 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    appearance: none; /* убираем стандартные стрелки */
 }
 
 .custom-select select:focus {
-  outline: none; /* убираем стандартную рамку при фокусе */
+    outline: none; /* убираем стандартную рамку при фокусе */
 }
 
 @media (max-width: 1024px) {

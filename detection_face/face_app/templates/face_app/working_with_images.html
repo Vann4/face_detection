@@ -8,7 +8,7 @@
 <main>
     <div class="content">
         <div class="form_trim">
-            <p class="working_with_images_p">Обрезать фото (оставить только лицо):</p>
+            <p class="working_with_images_p">Загрузить и обрезать изображение (оставить только лицо):</p>
             <form class="working_with_images_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p><tr><th><label for="face_photo">Загрузить изображение: </label></th><td>
@@ -19,7 +19,7 @@
         </div><!-- class="form_trim" -->
 
         <div class="age_gender_race">
-            <p class="working_with_images_p">Узнать примерный возраст, гендер, рассу и эмоцию:</p>
+            <p class="working_with_images_p">Выберите изображение, чтобы узнать примерный возраст, пол, расу и эмоцию:</p>
             <form class="working_with_images_form" method="post">
                 {% csrf_token %}
                 <div class="custom-select">
@@ -30,12 +30,6 @@
                     </select>
                 </div>
                 <p><button type="submit" class="submit">Узнать</button></p>
-<!--                {{ResultDeepAnalyze.age}} {{ResultDeepAnalyze.dominant_gender}} {{ResultDeepAnalyze.dominant_race}} {{ResultDeepAnalyze.dominant_emotion}}-->
-                <p>Название изображения: {{ path_img }}</p>
-                <p>Возраст: {{ ResultDeepAnalyze.age }}</p>
-                <p>Пол: {{ ResultDeepAnalyze.dominant_gender }}</p>
-                <p>Раса: {{ ResultDeepAnalyze.dominant_race }}</p>
-                <p>Эмоция: {{ ResultDeepAnalyze.dominant_emotion }}</p>
             </form>
         </div><!-- class="form_trim" -->
 
@@ -47,14 +41,20 @@
                     <thead>
                         <tr>
                             <th>Изображение</th>
-                            <th>Название изображения</th>
+                            <th>Данные</th>
                         </tr> <!--ряд с ячейками заголовков-->
                     </thead>
                     <tbody>
                     {% for i in face_user %}
                     <tr>
                         <td><img src="{{i.face_photo.url}}" alt=""></td>
-                        <td><p>{{i.face_photo}}</p></td>
+                        <td>
+                            <p>Изображение: {{i.face_photo}}</p>
+                            <p>Возраст: {{i.age}}</p>
+                            <p>Пол: {{i.dominant_gender}}</p>
+                            <p>Раса: {{i.dominant_race}}</p>
+                            <p>Эмоция: {{i.dominant_emotion}}</p>
+                        </td>
                     </tr> <!--ряд с ячейками тела таблицы-->
                     {% endfor %}
                     </tbody>
