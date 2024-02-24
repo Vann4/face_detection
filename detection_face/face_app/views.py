@@ -17,29 +17,6 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 def index(request):
     users = User.objects.all()
 
-    # img1 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
-    # img1_encodings = face_recognition.face_encodings(img1)[0]
-    #
-    # img2 = face_recognition.load_image_file("face_app/media/0_Katya.jpg")
-    # img2_encodings = face_recognition.face_encodings(img2)[0]
-    #
-    # result = face_recognition.compare_faces([img1_encodings], img2_encodings)
-    # print(result)
-    #
-    # if result[0]:
-    #     print("Добро пожаловать!!!")
-    # else:
-    #     print("Извините, не сегодня")
-
-    # context = {}
-
-    # if result[0]:
-    #     context['welcome_text'] = "Welcome to the club!"
-    #     # aa = {'a': 'fgfg'}
-    #     # aa = 'fg'
-    # else:
-    #     context['sorry_text'] = "Sorry, not today..."
-
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -51,8 +28,6 @@ def index(request):
     data = {
         'users': users,
         'form': form,
-        # 'context': context,
-        # 'aa': aa,
     }
     return render(request, 'face_app/index.html', data)
 
@@ -88,7 +63,7 @@ def registration(request):
 
 def extracting_faces(face_user, users_id, face_trim):
     for obj in face_user:
-        print(obj, obj.age, obj.dominant_gender, obj.dominant_race, obj.dominant_emotion)
+        # print(obj, obj.age, obj.dominant_gender, obj.dominant_race, obj.dominant_emotion)
 
         image_obj = face_recognition.load_image_file(f'face_app{obj}')
         face_encoding_obj = face_recognition.face_encodings(image_obj)[0]
@@ -99,11 +74,9 @@ def extracting_faces(face_user, users_id, face_trim):
         result = face_recognition.compare_faces([face_encoding_obj], face_encoding_obj_static)
 
         if result[0]:
-            print("Добро пожаловать!!!")
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(age=obj.age,
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(name=obj.name, age=obj.age,
                                                                                         dominant_gender=obj.dominant_gender,
-                                                                                        dominant_race=obj.dominant_race,
-                                                                                        dominant_emotion=obj.dominant_emotion)
+                                                                                        dominant_race=obj.dominant_race)
             break
         else:
             print("Извините, не сегодня")
