@@ -30,6 +30,24 @@ header{
     width: 100%;
 }
 
+.advantages{
+    width: 100%;
+}
+
+.advantages h3{
+    display: flex;
+    justify-content: center;
+}
+
+.advantages_img{
+    display: flex;
+    justify-content: center;
+}
+
+.advantages_img img{
+    width: 15vw;
+}
+
 .navbar {
     position: fixed;
     width: 99vw;
