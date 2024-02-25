@@ -41,7 +41,7 @@ header{
 
 .advantages_img{
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .advantages_img img{
