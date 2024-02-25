@@ -45,7 +45,7 @@ header{
 }
 
 .advantages_img img{
-    width: 15vw;
+    width: 10vw;
 }
 
 .navbar {
@@ -357,6 +357,10 @@ footer{
 
     .img_slider{
         display: block;
+    }
+
+    .advantages_img img{
+        width: 15vw;
     }
 
     .working_with_images_p {
