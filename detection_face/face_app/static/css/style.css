@@ -45,7 +45,7 @@ header{
 }
 
 .advantages_img img{
-    width: 10vw;
+    width: 150px;
 }
 
 .navbar {
@@ -360,7 +360,7 @@ footer{
     }
 
     .advantages_img img{
-        width: 15vw;
+        width: 100px;
     }
 
     .working_with_images_p {

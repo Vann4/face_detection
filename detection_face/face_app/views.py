@@ -1,13 +1,11 @@
 from django.contrib.auth.views import LoginView
-from django.contrib.sites import requests
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from .models import *
 import face_recognition
-from PIL import Image, ImageDraw
-import pickle
+from PIL import Image
 from pathlib import Path
 from deepface import DeepFace
 
@@ -15,8 +13,6 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 
 
 def index(request):
-    users = User.objects.all()
-
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -26,7 +22,6 @@ def index(request):
         form = FeedbackForm()
 
     data = {
-        'users': users,
         'form': form,
     }
     return render(request, 'face_app/index.html', data)
@@ -63,7 +58,6 @@ def registration(request):
 
 def extracting_faces(face_user, users_id, face_trim):
     for obj in face_user:
-        # print(obj, obj.age, obj.dominant_gender, obj.dominant_race, obj.dominant_emotion)
 
         image_obj = face_recognition.load_image_file(f'face_app{obj}')
         face_encoding_obj = face_recognition.face_encodings(image_obj)[0]
@@ -79,7 +73,7 @@ def extracting_faces(face_user, users_id, face_trim):
                                                                                         dominant_race=obj.dominant_race)
             break
         else:
-            print("Извините, не сегодня")
+            pass
 
 
 def working_with_images(request, users_id):
@@ -89,7 +83,6 @@ def working_with_images(request, users_id):
 
     if users_id == request.user.id:
         if request.method == "POST":
-            # form = TrimmingPhotoForm(request.POST, request.FILES)
             if form1.is_valid():
                 face = form1.save(commit=False)  # создание объекта без сохранения в БД
 
@@ -107,7 +100,6 @@ def working_with_images(request, users_id):
                     pil_img.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
-                    print(face_trim)
                     extracting_faces(face_user, users_id, f'{count}_{face_trim}')
                     count += 1
 
