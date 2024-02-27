@@ -1,8 +1,8 @@
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from .models import *
 import face_recognition
 from PIL import Image
@@ -95,13 +95,15 @@ def working_with_images(request, users_id):
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
 
-                    face_img = faces[top:bottom, left:right]
+                    face_img = faces[top-30:bottom + 30, left-20:right + 20]
                     pil_img = Image.fromarray(face_img)
                     pil_img.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
                     extracting_faces(face_user, users_id, f'{count}_{face_trim}')
                     count += 1
+                url = reverse('working_with_images', args=[users_id])
+                return HttpResponseRedirect(url)
 
             if form2.is_valid():
                 path_img = form2.cleaned_data['path']

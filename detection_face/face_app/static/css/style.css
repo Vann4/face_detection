@@ -21,8 +21,6 @@ header{
 }
 
 .img_slider{
-    width: 90vw;
-    margin: 0 auto;
     display: none;
 }
 
@@ -32,6 +30,13 @@ header{
 
 .advantages{
     width: 100%;
+    background-color: white;
+}
+
+.advantages h2{
+    display: flex;
+    justify-content: center;
+    font-size: 1.5em;
 }
 
 .advantages h3{
@@ -46,6 +51,26 @@ header{
 
 .advantages_img img{
     width: 150px;
+}
+
+.advantages_images{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.advantages_info{
+    display: flex;
+    background-color: #06001a96;
+    color: white;
+    padding: 10px;
+    flex-direction: column;
+    text-align: center;
+    margin: 15px 0px 15px 0px;
+}
+
+.advantages_info h2{
+    margin: 0px;
 }
 
 .navbar {
@@ -361,6 +386,12 @@ footer{
 
     .advantages_img img{
         width: 100px;
+    }
+
+    .advantages_img {
+        display: flex;
+        justify-content: space-evenly;
+        flex-direction: column;
     }
 
     .working_with_images_p {
