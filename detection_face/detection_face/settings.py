@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'detection_face.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'detection_face',
+        'NAME': 'face_detection',
         'USER': 'postgres',
         'PASSWORD': '123',
         'HOST': 'localhost',

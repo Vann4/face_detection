@@ -307,6 +307,19 @@ main h1{
     text-align: center;
 }
 
+.user_image_trim{
+    width: 80vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.user_img{
+    width: 300px;
+    margin: 0px 10px 10px 10px;
+    border: 2px dashed black;
+}
+
 table {
     border-collapse: collapse;
     border: 2px solid black;
@@ -314,7 +327,7 @@ table {
 }
 
 th, td {
-    width: 250px;
+    width: 300px;
     border: 1px solid black;
     padding: 8px;
     text-align: left;

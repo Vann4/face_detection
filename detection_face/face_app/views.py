@@ -95,9 +95,10 @@ def working_with_images(request, users_id):
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
 
-                    face_img = faces[top-30:bottom + 30, left-20:right + 20]
+                    face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
-                    pil_img.save(f"face_app/media/{count}_{face_trim}")
+                    resized_im = pil_img.resize((200, 200))
+                    resized_im.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
                     extracting_faces(face_user, users_id, f'{count}_{face_trim}')
