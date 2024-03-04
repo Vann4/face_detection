@@ -307,21 +307,21 @@ main h1{
     text-align: center;
 }
 
-table {
-    border-collapse: collapse;
-    border: 2px solid black;
-    width: 100%;
+.user_image_trim{
+    width: 80vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 
-th, td {
-    width: 250px;
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
+.user_img{
+    width: 300px;
+    margin: 0px 10px 10px 10px;
+    border: 2px dashed black;
 }
 
-th:first-child, td:first-child {
-    border-right: none;
+.working_with_images_image_tag_p{
+    word-wrap: break-word;
 }
 
 footer{

@@ -35,31 +35,45 @@
 
         <div class="img_trim">
             <p class="working_with_images_p_images">Ваши изображения:</p>
-            <div class="table_image_trim">
 
-                <table class="responsive-table">
-                    <thead>
-                        <tr>
-                            <th>Изображение</th>
-                            <th>Данные</th>
-                        </tr> <!--ряд с ячейками заголовков-->
-                    </thead>
-                    <tbody>
-                    {% for i in face_user %}
-                    <tr>
-                        <td><img src="{{i.face_photo.url}}" alt=""></td>
-                        <td>
-                            <p>Изображение: {{i.face_photo}}</p>
-                            <p>Имя: {{i.name}}</p>
-                            <p>Возраст: {{i.age}}</p>
-                            <p>Пол: {{i.dominant_gender}}</p>
-                            <p>Раса: {{i.dominant_race}}</p>
-                            <p>Эмоция: {{i.dominant_emotion}}</p>
-                        </td>
-                    </tr> <!--ряд с ячейками тела таблицы-->
-                    {% endfor %}
-                    </tbody>
-                </table>
+            <div class="user_image_trim">
+                {% for i in face_user %}
+                <div class="user_img">
+                    <img src="{{i.face_photo.url}}" alt="">
+                    <p class="working_with_images_image_tag_p">Изображение: {{i.face_photo}}</p>
+                    <p class="working_with_images_image_tag_p">Имя: {{i.name}}</p>
+                    <p class="working_with_images_image_tag_p">Описание: {{i.description}}</p>
+                    <p>Возраст: {{i.age}}</p>
+                    <p>Пол: {{i.dominant_gender}}</p>
+                    <p>Раса: {{i.dominant_race}}</p>
+                    <p>Эмоция: {{i.dominant_emotion}}</p>
+                    <p>Дата загрузки: {{ i.download_date|date:"d-F-Y" }}</p>
+                </div>
+                {% endfor %}
+<!--                <table class="responsive-table">-->
+<!--                    <thead>-->
+<!--                        <tr>-->
+<!--                            <th>Изображение</th>-->
+<!--                            <th>Данные</th>-->
+<!--                        </tr> &lt;!&ndash;ряд с ячейками заголовков&ndash;&gt;-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    {% for i in face_user %}-->
+<!--                    <tr>-->
+<!--                        <td><img src="{{i.face_photo.url}}" alt=""></td>-->
+<!--                        <td>-->
+<!--                            <p>Изображение: {{i.face_photo}}</p>-->
+<!--                            <p>Имя: {{i.name}}</p>-->
+<!--                            <p>Возраст: {{i.age}}</p>-->
+<!--                            <p>Пол: {{i.dominant_gender}}</p>-->
+<!--                            <p>Раса: {{i.dominant_race}}</p>-->
+<!--                            <p>Эмоция: {{i.dominant_emotion}}</p>-->
+<!--                            <p>Дата загрузки: {{ i.download_date|date:"d-F-Y" }}</p>-->
+<!--                        </td>-->
+<!--                    </tr> &lt;!&ndash;ряд с ячейками тела таблицы&ndash;&gt;-->
+<!--                    {% endfor %}-->
+<!--                    </tbody>-->
+<!--                </table>-->
 
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->
