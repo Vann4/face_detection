@@ -35,13 +35,14 @@
 
         <div class="img_trim">
             <p class="working_with_images_p_images">Ваши изображения:</p>
+
             <div class="user_image_trim">
                 {% for i in face_user %}
                 <div class="user_img">
                     <img src="{{i.face_photo.url}}" alt="">
-                    <p>Изображение: {{i.face_photo}}</p>
-                    <p>Имя: {{i.name}}</p>
-                    <p>Описание: {{i.description}}</p>
+                    <p class="working_with_images_image_tag_p">Изображение: {{i.face_photo}}</p>
+                    <p class="working_with_images_image_tag_p">Имя: {{i.name}}</p>
+                    <p class="working_with_images_image_tag_p">Описание: {{i.description}}</p>
                     <p>Возраст: {{i.age}}</p>
                     <p>Пол: {{i.dominant_gender}}</p>
                     <p>Раса: {{i.dominant_race}}</p>
@@ -73,8 +74,6 @@
 <!--                    {% endfor %}-->
 <!--                    </tbody>-->
 <!--                </table>-->
-
-
 
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->

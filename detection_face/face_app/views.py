@@ -8,6 +8,7 @@ import face_recognition
 from PIL import Image
 from pathlib import Path
 from deepface import DeepFace
+import numpy as np
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
 
@@ -59,25 +60,40 @@ def registration(request):
 def extracting_faces(face_user, users_id, face_trim):
     for obj in face_user:
 
-        image_obj = face_recognition.load_image_file(f'face_app{obj}')
+        image_obj = face_recognition.load_image_file(f'face_app{obj}') # Фото из базы данных
         face_encoding_obj = face_recognition.face_encodings(image_obj)[0]
 
-        image_obj_static = face_recognition.load_image_file(f'face_app/media/{face_trim}')
-        face_encoding_obj_static = face_recognition.face_encodings(image_obj_static)[0]
+        image_user_upload = face_recognition.load_image_file(f'face_app/media/{face_trim}') # Загруженное фото пользователя
+        face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
 
-        result = face_recognition.compare_faces([face_encoding_obj], face_encoding_obj_static)
+        result = face_recognition.compare_faces([face_encoding_obj], face_encoding_user_upload)
 
         if result[0]:
             FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(name=obj.name, age=obj.age,
                                                                                         dominant_gender=obj.dominant_gender,
-                                                                                        dominant_race=obj.dominant_race)
+                                                                                        dominant_race=obj.dominant_race,
+                                                                                        face_encodings=face_encoding_user_upload)
             break
         else:
-            pass
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(face_encodings=face_encoding_user_upload)
 
 
 def working_with_images(request, users_id):
     face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
+    # Тест сохранения кодировки лица в бд
+    # test = FaceTrimUser.objects.all().values_list('face_encodings', flat=True)
+    # image_user_upload = face_recognition.load_image_file(f'face_app/media/0_biden.png')  # Загруженное фото пользователя
+    # face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
+    # known_face_encodings = []
+    # for i in test:
+    #     face_encoding = np.frombuffer(i, dtype=np.float64)
+    #     known_face_encodings.append(face_encoding)
+    #     result = face_recognition.compare_faces(known_face_encodings, face_encoding_user_upload)
+    #     if result[0]:
+    #         print('True')
+    #     else:
+    #         print('False')
+
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
 

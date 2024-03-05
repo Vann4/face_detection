@@ -96,12 +96,6 @@ from deepface import DeepFace
 # face_rec()
 
 
-
-
-
-
-
-
 # import cv2
 # import dlib
 # import face_recognition
@@ -157,10 +151,6 @@ from deepface import DeepFace
 # estimate_age("let_2.jpg")
 
 
-
-
-
-
 # import cv2
 # import dlib
 #
@@ -214,3 +204,47 @@ from deepface import DeepFace
 # cv2.imshow("Age Detection", image)
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
+
+
+# ============================================================================
+# import face_recognition
+# import numpy as np
+# import sqlite3
+#
+# # Подключаемся к базе данных
+# conn = sqlite3.connect('face_encodings.db')
+# c = conn.cursor()
+#
+# # Получаем кодировки лиц из базы данных
+# c.execute("SELECT * FROM face_encodings")
+# rows = c.fetchall()
+#
+# known_face_encodings = []
+# known_face_names = []
+#
+# for row in rows:
+#     known_face_names.append(row[0])  # Имя лица
+#     face_encoding_bytes = row[1]  # Кодировка лица в формате BYTEA
+#     # Преобразуем данные в numpy array
+#     face_encoding = np.frombuffer(face_encoding_bytes, dtype=np.float64)
+#     known_face_encodings.append(face_encoding)
+#
+# # Закрываем соединение с базой данных
+# conn.close()
+#
+# # Далее, когда у вас есть список известных кодировок лиц, вы можете использовать его для сравнения с новыми изображениями
+# image = face_recognition.load_image_file("unknown_face.jpg")
+# face_locations = face_recognition.face_locations(image)
+# face_encodings = face_recognition.face_encodings(image, face_locations)
+#
+# for face_encoding in face_encodings:
+#     # Сравниваем новую кодировку лица с известными
+#     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+#     name = "Unknown"
+#
+#     # Если есть совпадение, то находим соответствующее имя
+#     if True in matches:
+#         first_match_index = matches.index(True)
+#         name = known_face_names[first_match_index]
+#
+#     print("Это", name)

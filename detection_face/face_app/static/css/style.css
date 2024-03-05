@@ -320,21 +320,8 @@ main h1{
     border: 2px dashed black;
 }
 
-table {
-    border-collapse: collapse;
-    border: 2px solid black;
-    width: 100%;
-}
-
-th, td {
-    width: 300px;
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-
-th:first-child, td:first-child {
-    border-right: none;
+.working_with_images_image_tag_p{
+    word-wrap: break-word;
 }
 
 footer{
