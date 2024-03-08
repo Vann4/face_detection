@@ -37,42 +37,48 @@ from deepface import DeepFace
 # print("dominant_race:", result[0]["dominant_race"])
 # print("Age:", result[0]["age"])
 
-# import face_recognition
+import face_recognition
 
 # Load the jpg files into numpy arrays
-# biden_image = face_recognition.load_image_file("biden.png")
-# obama_image = face_recognition.load_image_file("obama.png")
-# print(obama_image)
-# print('===============================================')
-# unknown_image = face_recognition.load_image_file("cfbcad3349a6bf24308b38e0e3f6b1b8.jpeg")
-# print(unknown_image)
+biden_image = face_recognition.load_image_file("biden.png")
+obama_image = face_recognition.load_image_file("obama.png")
+unknown_image = face_recognition.load_image_file("biden.png")
 
 # Get the face encodings for each face in each image file
 # Since there could be more than one face in each image, it returns a list of encodings.
 # But since I know each image only has one face, I only care about the first encoding in each image, so I grab index 0.
-# try:
-#     biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
-#     obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
-#     unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
-#     print(biden_face_encoding)
-#     print(obama_face_encoding)
-#     print(unknown_face_encoding)
-# except IndexError:
-#     print("I wasn't able to locate any faces in at least one of the images. Check the image files. Aborting...")
-#     quit()
+try:
+    biden_face_encoding = face_recognition.face_encodings(biden_image)[0]
+    obama_face_encoding = face_recognition.face_encodings(obama_image)[0]
+    unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+except IndexError:
+    print("I wasn't able to locate any faces in at least one of the images. Check the image files. Aborting...")
+    quit()
 
-# known_faces = [
-#     biden_face_encoding,
-#     obama_face_encoding
-# ]
+known_faces = [
+    obama_face_encoding,
+    biden_face_encoding
+]
 
 # results is an array of True/False telling if the unknown face matched anyone in the known_faces array
-# results = face_recognition.compare_faces([biden_face_encoding], biden_face_encoding)
+# results = face_recognition.compare_faces(known_faces, unknown_face_encoding)
+#
+# if results[0] == True:
+#     print('True')
+# else:
+#     print('False')
+
+for i in known_faces:
+    results = face_recognition.compare_faces([i], unknown_face_encoding)
+
+    if results[0] == True:
+        print('True')
+    else:
+        print('False')
 
 # print("Is the unknown face a picture of Biden? {}".format(results[0]))
 # print("Is the unknown face a picture of Obama? {}".format(results[1]))
 # print("Is the unknown face a new person that we've never seen before? {}".format(not True in results))
-# print(results)
 
 # Для прямоугольника вокруг лица
 # import face_recognition

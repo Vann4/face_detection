@@ -38,4 +38,4 @@ class Feedback(models.Model):
         verbose_name_plural = 'Обратная связь'
 
     def __str__(self):
-        return self.descriptions
+        return self.users_id.email

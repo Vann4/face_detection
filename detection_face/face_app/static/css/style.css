@@ -322,6 +322,7 @@ main h1{
 
 .working_with_images_image_tag_p{
     word-wrap: break-word;
+    padding: 0px 0px 0px 2px;
 }
 
 footer{
