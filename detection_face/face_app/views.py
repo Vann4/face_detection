@@ -14,6 +14,16 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 
 
 def index(request):
+    face_user = FaceTrimUser.objects.get(name="Марк")
+    face_encoding = np.frombuffer(face_user.face_encodings,
+                                  dtype=np.float64)
+    result = face_recognition.compare_faces([face_encoding],
+                                            face_encoding)
+    if result[0]:
+        print('true')
+    else:
+        print('false')
+
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -58,73 +68,25 @@ def registration(request):
 
 
 def extracting_faces(face_user, users_id, count, face_trim):
-    # for obj in face_user:
-    #
-    #     image_obj = face_recognition.load_image_file(f'face_app{obj}') # Фото из базы данных
-    #     face_encoding_obj = face_recognition.face_encodings(image_obj)[0]
-    #
-    #     image_user_upload = face_recognition.load_image_file(f'face_app/media/{face_trim}') # Загруженное фото пользователя
-    #     face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
-    #
-    #     result = face_recognition.compare_faces([face_encoding_obj], face_encoding_user_upload)
-    #
-    #     if result[0]:
-    #         FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(name=obj.name, age=obj.age,
-    #                                                                                     dominant_gender=obj.dominant_gender,
-    #                                                                                     dominant_race=obj.dominant_race,
-    #                                                                                     face_encodings=face_encoding_user_upload)
-    #         break
-    #     else:
-    #         FaceTrimUser.objects.filter(users_id=users_id, face_photo=face_trim).update(face_encodings=face_encoding_user_upload)
     image_user_upload = face_recognition.load_image_file(f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
     face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
+    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(face_encodings=face_encoding_user_upload)
 
-    known_face_encodings = []
-
-    for append_known_face_encodings in face_user:  # Добавление кодировок лица в список
-        if append_known_face_encodings.face_encodings is None:
-            print('none')
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
-                face_encodings=face_encoding_user_upload)
-        else:
-            face_encoding = np.frombuffer(append_known_face_encodings.face_encodings,
-                                          dtype=np.float64)  # Беру из QuerySet face_user, поле append_known_face_encodings.face_encodings
-            known_face_encodings.append(face_encoding)
-
-    for compare_faces_known_face_encodings in known_face_encodings:
-        result = face_recognition.compare_faces([compare_faces_known_face_encodings],
-                                                face_encoding_user_upload)  # Сравнение кодировок лиц из списка с загруженным
+    for data_face_user in face_user:
+        face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
+        result = face_recognition.compare_faces([face_encoding], face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
         if result[0]:
-            for data_face_user in face_user:
-                FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(name=data_face_user.name,
-                                                                                            age=data_face_user.age,
-                                                                                            dominant_gender=data_face_user.dominant_gender,
-                                                                                            dominant_race=data_face_user.dominant_race,
-                                                                                            face_encodings=face_encoding_user_upload)
-                break
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(name=data_face_user.name,
+                                                                                        age=data_face_user.age,
+                                                                                        dominant_gender=data_face_user.dominant_gender,
+                                                                                        dominant_race=data_face_user.dominant_race)
+            break
         else:
-            # FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
-            #     face_encodings=face_encoding_user_upload)
             pass
 
 
 def working_with_images(request, users_id):
     face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
-    # Тест сохранения кодировки лица в бд
-    # face_encodings_database = FaceTrimUser.objects.all().values_list('face_encodings', flat=True) # Вывод поля face_encodings из базы данных
-    # image_user_upload = face_recognition.load_image_file(f'face_app/media/0_Toretto_2.png')  # Загруженное фото пользователя
-    # face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
-    # known_face_encodings = []
-    # for append_known_face_encodings in face_user: #Добавление кодировок лица в список
-    #     face_encoding = np.frombuffer(append_known_face_encodings.face_encodings, dtype=np.float64) #Беру из QuerySet face_user, поле append_known_face_encodings.face_encodings
-    #     known_face_encodings.append(face_encoding)
-    #
-    # for compare_faces_known_face_encodings in known_face_encodings:
-    #     result = face_recognition.compare_faces([compare_faces_known_face_encodings], face_encoding_user_upload) #Сравнение кодировок лиц из списка с загруженным
-    #     if result[0]:
-    #         print('True')
-    #     else:
-    #         print('False')
 
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
@@ -145,8 +107,6 @@ def working_with_images(request, users_id):
 
                     face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
-                    # resized_im = pil_img.resize((200, 200))
-                    # resized_im.save(f"face_app/media/{count}_{face_trim}")
                     pil_img.save(f"face_app/media/{count}_{face_trim}")
                     face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
                     face_user_photo.save()
