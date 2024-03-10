@@ -14,16 +14,6 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
 
 
 def index(request):
-    face_user = FaceTrimUser.objects.get(name="Марк")
-    face_encoding = np.frombuffer(face_user.face_encodings,
-                                  dtype=np.float64)
-    result = face_recognition.compare_faces([face_encoding],
-                                            face_encoding)
-    if result[0]:
-        print('true')
-    else:
-        print('false')
-
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():

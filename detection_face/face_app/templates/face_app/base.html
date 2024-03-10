@@ -58,7 +58,7 @@
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     {% if user.is_authenticated %}
                         <li><a id="popup_feedback">Обратная связь</a></li>
-                        <li><a href="{% url 'working_with_images' users_id=user.id %}">Работа с изображениями</a></li>
+                        <li><a href="{% url 'working_with_images' users_id=user.id %}">Распознавание лиц</a></li>
                     {% else %}
                     {% endif %}
                 </ul>
