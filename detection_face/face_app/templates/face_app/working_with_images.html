@@ -77,6 +77,25 @@
 
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->
+        <video id="video" width="640" height="480" autoplay></video>
+        <button id="capture">Захватить изображение</button>
+        <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
+
+        <img id="video_stream" src="{% url 'live_feed' 1 %}" alt="Video Stream">
+
+        <script>
+            document.getElementById('capture').addEventListener('click', function() {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        document.getElementById('video').srcObject = stream;
+                    })
+                    .catch(function(err) {
+                        console.log("Что-то пошло не так!", err);
+                    });
+            }
+            });
+        </script>
     </div><!-- class="content" -->
 </main>
 

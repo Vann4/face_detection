@@ -142,6 +142,7 @@ known_face_encodings = [
     ya_face_encoding,
     biden_face_encoding
 ]
+
 known_face_names = [
     "Марк",
     "Байден"

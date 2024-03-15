@@ -9,6 +9,9 @@ from PIL import Image
 from pathlib import Path
 from deepface import DeepFace
 import numpy as np
+import cv2
+from django.http import StreamingHttpResponse
+from django.views.decorators import gzip
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
 
@@ -58,21 +61,115 @@ def registration(request):
 
 
 def extracting_faces(face_user, users_id, count, face_trim):
-    image_user_upload = face_recognition.load_image_file(f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
+    image_user_upload = face_recognition.load_image_file(
+        f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
     face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
-    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(face_encodings=face_encoding_user_upload)
+    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
+        face_encodings=face_encoding_user_upload)
 
     for data_face_user in face_user:
         face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
-        result = face_recognition.compare_faces([face_encoding], face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
+        result = face_recognition.compare_faces([face_encoding],
+                                                face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
         if result[0]:
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(name=data_face_user.name,
-                                                                                        age=data_face_user.age,
-                                                                                        dominant_gender=data_face_user.dominant_gender,
-                                                                                        dominant_race=data_face_user.dominant_race)
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
+                name=data_face_user.name,
+                age=data_face_user.age,
+                dominant_gender=data_face_user.dominant_gender,
+                dominant_race=data_face_user.dominant_race)
             break
         else:
             pass
+
+
+# face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+known_face_encodings = []
+known_face_names = []
+
+face_locations = []
+face_encodings = []
+face_names = []
+
+
+def gen(camera, users_id):
+    face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
+    for data_face_user in face_user:
+        face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
+        known_face_encodings.append(face_encoding)
+        known_face_names.append(data_face_user.name)
+
+    process_this_frame = True
+    while True:
+        ret, frame = camera.read()
+        if not ret:
+            break
+        else:
+            if process_this_frame:
+                # Resize frame of video to 1/4 size for faster face recognition processing
+                small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+
+                # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+                rgb_small_frame = small_frame[:, :, ::-1]
+
+                # Find all the faces and face encodings in the current frame of video
+                face_locations = face_recognition.face_locations(rgb_small_frame)
+                face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+
+                face_names = []
+                for face_encoding in face_encodings:
+                    # See if the face is a match for the known face(s)
+                    matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                    name = "Неизвестно"
+
+                    # Or instead, use the known face with the smallest distance to the new face
+                    face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                    best_match_index = np.argmin(face_distances)
+                    if matches[best_match_index]:
+                        name = known_face_names[best_match_index]
+
+                    face_names.append(name)
+
+            process_this_frame = not process_this_frame
+
+            # Display the results
+            for (top, right, bottom, left), name in zip(face_locations, face_names):
+                # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+                top *= 4
+                right *= 4
+                bottom *= 4
+                left *= 4
+
+                # Draw a box around the face
+                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
+
+                # Draw a label with a name below the face
+                cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
+                # font = cv2.FONT_HERSHEY_DUPLEX
+                font = cv2.FONT_HERSHEY_COMPLEX
+                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
+            # Преобразование изображения в оттенки серого
+            # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # # Обнаружение лиц на кадре
+            # faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            # # Рисование прямоугольников вокруг обнаруженных лиц
+            # for (x, y, w, h) in faces:
+            #     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+            # Конвертирование изображения в формат JPEG
+            _, jpeg = cv2.imencode('.jpg', frame)
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + jpeg.tobytes() + b'\r\n\r\n')
+
+
+@gzip.gzip_page
+def live_feed(request, users_id):
+    try:
+        camera = cv2.VideoCapture(0)
+    except Exception as e:
+        print(str(e))
+
+    return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
 
 
 def working_with_images(request, users_id):
@@ -142,6 +239,14 @@ def working_with_images(request, users_id):
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
+
+        # try:
+        #     # Инициализация камеры
+        #     camera = cv2.VideoCapture(0)
+        # except Exception as e:
+        #     print(str(e))
+
+        # return StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
 
         data = {
             'face_user': face_user,

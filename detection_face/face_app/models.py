@@ -11,7 +11,7 @@ class User(AbstractUser):
 
 class FaceTrimUser(models.Model):
     face_photo = models.ImageField(verbose_name="Фотография лица")
-    name = models.TextField(blank=True, null=True, verbose_name="Имя")
+    name = models.TextField(blank=True, null=True, verbose_name="Имя", default='Неизвестно')
     description = models.TextField(blank=True, null=True, verbose_name="Описание")
     age = models.IntegerField(blank=True, null=True, verbose_name="Возраст")
     dominant_gender = models.CharField(blank=True, null=True, max_length=10, verbose_name="Пол")
