@@ -1,18 +1,14 @@
 const container_popup_feedback = document.querySelector("#container_popup_feedback");
 
 document.getElementById("close-button").addEventListener("click", function() {
-//    document.getElementById("container_popup_feedback").style.display = "none";
     container_popup_feedback.classList.remove("container_popup_feedback");
     container_popup_feedback.classList.add("display_none_container_popup_feedback");
 });
-
-console.log(container_popup_feedback)
 
 const popup_feedback = document.querySelector("#popup_feedback");
 
 if (popup_feedback) {
     popup_feedback.addEventListener("click", function() {
-//        document.getElementById("container_popup_feedback").style.display = "block";
         document.getElementById("container_popup_feedback").classList.remove("display_none_container_popup_feedback");
         document.getElementById("container_popup_feedback").classList.add("container_popup_feedback");
     });
@@ -21,7 +17,6 @@ if (popup_feedback) {
 
 window.addEventListener('keydown', (e) => {
     if (e.key === "Escape") {
-//        document.getElementById("container_popup_feedback").style.display = "none";
         document.getElementById("container_popup_feedback").classList.remove("container_popup_feedback");
         document.getElementById("container_popup_feedback").classList.add("display_none_container_popup_feedback");
     }
@@ -56,7 +51,6 @@ function renderPopup() {
     buttons = document.querySelectorAll("#popup_feedback")
     buttons.forEach(function(button) {
     button.addEventListener('click', function() {
-//        document.getElementById("container_popup_feedback").style.display = "block";
         document.getElementById("container_popup_feedback").classList.remove("display_none_container_popup_feedback");
         document.getElementById("container_popup_feedback").classList.add("container_popup_feedback");
         });
@@ -77,3 +71,11 @@ function closeOnClick() {
     hamb.classList.remove("active");
     body.classList.remove("noscroll");
 }
+
+//Работа с камерой
+const video_stream = document.querySelector("#video_stream");
+const turn_on_camera = document.querySelector("#turn_on_camera");
+
+turn_on_camera.addEventListener("click", function() {
+    video_stream.classList.toggle("display_none");
+});

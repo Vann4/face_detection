@@ -8,13 +8,13 @@
 <main>
     <div class="content">
         <div class="form_trim">
-            <p class="working_with_images_p">Загрузить и обрезать изображение (оставить только лицо):</p>
+            <p class="working_with_images_p">Распознать лицо на изображении:</p>
             <form class="working_with_images_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p><tr><th><label for="face_photo">Загрузить изображение: </label></th><td>
                     <input type="file" name="face_photo" required id="face_photo"></td></tr><p>
                 <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
-                <p><button type="submit" class="submit">Обрезать</button></p>
+                <p><button type="submit" class="submit">Распознать</button></p>
             </form>
         </div><!-- class="form_trim" -->
 
@@ -31,10 +31,17 @@
                 </div>
                 <p><button type="submit" class="submit">Узнать</button></p>
             </form>
-        </div><!-- class="form_trim" -->
+        </div><!-- class="age_gender_race" -->
+
+        <div class="video_stream">
+            <p class="working_with_images_p">Распознавание лиц в реально времени:</p>
+            <button id="turn_on_camera" class="submit">Включить камеру</button>
+            <img class="display_none" id="video_stream" src="{% url 'live_feed' 1 %}" alt="Камера">
+        </div> <!-- class="video_stream" -->
+
 
         <div class="img_trim">
-            <p class="working_with_images_p_images">Ваши изображения:</p>
+            <p class="working_with_images_p_images">Распознанные лица:</p>
 
             <div class="user_image_trim">
                 {% for i in face_user %}
@@ -50,52 +57,9 @@
                     <p class="working_with_images_image_tag_p">Дата загрузки: {{ i.download_date|date:"d-F-Y" }}</p>
                 </div>
                 {% endfor %}
-<!--                <table class="responsive-table">-->
-<!--                    <thead>-->
-<!--                        <tr>-->
-<!--                            <th>Изображение</th>-->
-<!--                            <th>Данные</th>-->
-<!--                        </tr> &lt;!&ndash;ряд с ячейками заголовков&ndash;&gt;-->
-<!--                    </thead>-->
-<!--                    <tbody>-->
-<!--                    {% for i in face_user %}-->
-<!--                    <tr>-->
-<!--                        <td><img src="{{i.face_photo.url}}" alt=""></td>-->
-<!--                        <td>-->
-<!--                            <p>Изображение: {{i.face_photo}}</p>-->
-<!--                            <p>Имя: {{i.name}}</p>-->
-<!--                            <p>Возраст: {{i.age}}</p>-->
-<!--                            <p>Пол: {{i.dominant_gender}}</p>-->
-<!--                            <p>Раса: {{i.dominant_race}}</p>-->
-<!--                            <p>Эмоция: {{i.dominant_emotion}}</p>-->
-<!--                            <p>Дата загрузки: {{ i.download_date|date:"d-F-Y" }}</p>-->
-<!--                        </td>-->
-<!--                    </tr> &lt;!&ndash;ряд с ячейками тела таблицы&ndash;&gt;-->
-<!--                    {% endfor %}-->
-<!--                    </tbody>-->
-<!--                </table>-->
 
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->
-        <video id="video" width="640" height="480" autoplay></video>
-        <button id="capture">Захватить изображение</button>
-        <canvas id="canvas" width="640" height="480" style="display: none;"></canvas>
-
-        <img id="video_stream" src="{% url 'live_feed' 1 %}" alt="Video Stream">
-
-        <script>
-            document.getElementById('capture').addEventListener('click', function() {
-            if (navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true })
-                    .then(function(stream) {
-                        document.getElementById('video').srcObject = stream;
-                    })
-                    .catch(function(err) {
-                        console.log("Что-то пошло не так!", err);
-                    });
-            }
-            });
-        </script>
     </div><!-- class="content" -->
 </main>
 
