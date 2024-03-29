@@ -34,9 +34,13 @@
         </div><!-- class="age_gender_race" -->
 
         <div class="video_stream">
-            <p class="working_with_images_p">Распознавание лиц в реально времени:</p>
+            <p class="working_with_images_p">Распознавание лиц в реальном времени:</p>
             <button id="turn_on_camera" class="submit">Включить камеру</button>
-            <img class="display_none" id="video_stream" src="{% url 'live_feed' 1 %}" alt="Камера">
+            <button id="turn_off_the_camera" class="submit display_none">Выключить камеру</button>
+            <div class="video_stream_img">
+                <img class="display_none" id="video_stream" src="{% url 'live_feed' user.id %}" alt="Камера">
+                <p id="error_message" class="working_with_images_p" style="display:none;">Не удалось подключиться к камере</p>
+            </div>
         </div> <!-- class="video_stream" -->
 
 
@@ -64,5 +68,11 @@
 </main>
 
 {% endblock main %}
+
+{% block scripts %}
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% endblock scripts %}
 
 {% block footer %}{% endblock footer %}

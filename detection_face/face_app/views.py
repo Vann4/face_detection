@@ -166,8 +166,8 @@ def gen(camera, users_id):
 def live_feed(request, users_id):
     try:
         camera = cv2.VideoCapture(0)
-    except Exception as e:
-        print(str(e))
+    except Exception:
+        pass
 
     return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
 

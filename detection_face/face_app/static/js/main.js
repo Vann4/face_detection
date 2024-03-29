@@ -75,7 +75,30 @@ function closeOnClick() {
 //Работа с камерой
 const video_stream = document.querySelector("#video_stream");
 const turn_on_camera = document.querySelector("#turn_on_camera");
+const turn_off_the_camera = document.querySelector("#turn_off_the_camera");
+const errorMessage = document.querySelector("#error_message");
 
 turn_on_camera.addEventListener("click", function() {
-    video_stream.classList.toggle("display_none");
+    video_stream.classList.remove("display_none");
+
+    turn_on_camera.classList.add("display_none");
+    turn_off_the_camera.classList.remove("display_none");
+
+    // вывод ошибки если камера не найдена
+    if (video_stream.complete && video_stream.naturalWidth !== 0) {
+        errorMessage.style.display = 'none';
+    } else {
+        video_stream.style.display = 'none';
+        errorMessage.style.display = 'block';
+    }
+
+});
+
+turn_off_the_camera.addEventListener("click", function() {
+
+    video_stream.classList.add("display_none");
+    errorMessage.style.display = 'none';
+    turn_on_camera.classList.remove("display_none");
+    turn_off_the_camera.classList.add("display_none");
+
 });
