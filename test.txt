@@ -1,0 +1,68 @@
+<!--                <video id="video" width="640" height="480" autoplay></video>-->
+<!--                <canvas id="canvas" width="640" height="480"></canvas>-->
+<!--                <div id="result"></div>-->
+<!--                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>-->
+<!--                <script>-->
+<!--                    let csrfToken = "{{ csrf_token }}";-->
+<!--                </script>-->
+
+
+//
+//navigator.mediaDevices.getUserMedia({ video: true })
+//    .then(function(stream) {
+//        var video = document.getElementById('video');
+//        video.srcObject = stream;
+//        video.play();
+//    })
+//    .catch(function(err) {
+//        console.log("An error occurred: " + err);
+//    });
+//
+//// Функция для отправки изображения на сервер Django
+//function sendImageToDjango(imageData) {
+//    $.ajax({
+//        type: "POST",
+//        url: "/live_feed/1/",
+//        headers: {
+//            "X-CSRFToken": csrfToken
+//        },
+//        data: {
+//            image_data: imageData
+//        },
+//        success: function(response) {
+//            // Отображаем результат на странице
+//            $('#result').text('Detected face: ' + response.name);
+//        },
+//        error: function(xhr, status, error) {
+//            console.error("Error:", error);
+//        }
+//    });
+//}
+//
+//function detectAndSend() {
+//    let canvas = document.getElementById('canvas');
+//    let context = canvas.getContext('2d');
+//
+//    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+//    let imageData = canvas.toDataURL('image/jpeg');
+//
+//    sendImageToDjango(imageData);
+//}
+//
+//// Запускаем обнаружение лиц и отправку на сервер каждые 2 секунды
+//setInterval(detectAndSend, 2000);
+
+    # if request.method == 'POST' and request.is_ajax():
+    #     image_data = request.POST.get('image_data', None)
+    #
+    #     # Декодируем base64-кодированную строку изображения
+    #     format, imgstr = image_data.split(';base64,')
+    #     ext = format.split('/')[-1]
+    #     data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+    #     # user_id = User.objects.get(id=request.user.id)
+    #     # image = FaceTrimUser(face_photo=data, users_id=user_id)
+    #     # image.save()
+    #     detected_name = "John Doe"
+    #     return JsonResponse({'name': detected_name})
+    #
+    # return JsonResponse({'error': 'Это не POST-запрос'})
