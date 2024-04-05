@@ -1,6 +1,7 @@
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, HttpResponseRedirect
+from django.core.files.base import ContentFile
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from .models import *
@@ -12,6 +13,9 @@ import numpy as np
 import cv2
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
+
+import base64
+import dlib
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
 
@@ -61,8 +65,7 @@ def registration(request):
 
 
 def extracting_faces(face_user, users_id, count, face_trim):
-    image_user_upload = face_recognition.load_image_file(
-        f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
+    image_user_upload = face_recognition.load_image_file(f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
     face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
     FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
         face_encodings=face_encoding_user_upload)
@@ -239,14 +242,6 @@ def working_with_images(request, users_id):
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
-
-        # try:
-        #     # Инициализация камеры
-        #     camera = cv2.VideoCapture(0)
-        # except Exception as e:
-        #     print(str(e))
-
-        # return StreamingHttpResponse(gen(camera), content_type="multipart/x-mixed-replace;boundary=frame")
 
         data = {
             'face_user': face_user,
