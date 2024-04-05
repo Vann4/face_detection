@@ -367,9 +367,17 @@ footer{
     outline: none; /* убираем стандартную рамку при фокусе */
 }
 
+#turn_off_the_camera{
+    margin-bottom: 10px;
+}
+
 .video_stream_img{
     display: flex;
     justify-content: center;
+}
+
+#video_stream{
+    max-width: 100%;
 }
 
 @media (max-width: 1024px) {
