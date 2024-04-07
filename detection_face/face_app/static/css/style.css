@@ -207,7 +207,7 @@ main h1{
 }
 
 .popup_feedback{
-    width: 400px;
+    width: 450px;
     background-color: white;
     box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 0.7);
 }
@@ -217,13 +217,17 @@ main h1{
 }
 
 .popup_feedback_form{
-    padding: 20px;
+    padding: 10px;
 }
 
 #close-button{
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     cursor: pointer;
+}
+
+#close-button h2{
+    margin: 10px 0px;
 }
 
 .display_none, .display_none_container_popup_feedback{
