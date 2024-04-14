@@ -16,7 +16,7 @@ from django.views.decorators import gzip
 import base64
 import dlib
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm, DeletePhotoForm
 
 
 def index(request):
@@ -180,6 +180,7 @@ def working_with_images(request, users_id):
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
     UpdateDataPhoto = UpdateDataPhotoForm(request.POST)
+    DeletePhoto = DeletePhotoForm(request.POST)
 
     if users_id == request.user.id:
         if request.method == "POST":
@@ -258,6 +259,10 @@ def working_with_images(request, users_id):
                     dominant_emotion=dominant_emotion)
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
+
+            if DeletePhoto.is_valid(): #удаление фото
+                id = DeletePhoto.cleaned_data['id']
+                FaceTrimUser.objects.filter(id=id, users_id=users_id).delete()
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()

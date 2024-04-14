@@ -69,6 +69,6 @@ class UpdateDataPhotoForm(forms.Form):
     dominant_emotion = forms.CharField(label="Эмоция")
     users_id = forms.IntegerField(label="id пользователя")
 
-    # class Meta:
-    #     model = FaceTrimUser
-    #     fields = ['id', 'name', 'description', 'age', 'dominant_gender', 'dominant_race', 'dominant_emotion', 'users_id']
+
+class DeletePhotoForm(forms.Form):
+    id = forms.IntegerField()

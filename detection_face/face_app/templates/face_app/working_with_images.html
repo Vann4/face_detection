@@ -133,6 +133,13 @@
                     <p class="content_center">
                         <button class="submit button_edit_data_photo" data-form-id="{{i.id}}">Редактировать</button>
                     </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="number" name="id" value="{{i.id}}" class="display_none">
+                        <p class="content_center">
+                            <button type="submit" class="submit">Удалить</button>
+                        </p>
+                    </form>
                 </div><!-- class="user_img" -->
                 {% endfor %}
             </div><!-- class="table_image_trim" -->
