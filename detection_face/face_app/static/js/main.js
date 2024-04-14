@@ -34,10 +34,10 @@ const auth = document.querySelector(".auth").cloneNode(1);
 // При клике на иконку hamb вызываем ф-ию hambHandler
 hamb.addEventListener("click", hambHandler);
 
-// Выполняем действия при клике ..
+// Выполняем действия при клике
 function hambHandler(e) {
     e.preventDefault();
-    // Переключаем стили элементов при кликеo
+    // Переключаем стили элементов при клике
     popup.classList.toggle("open");
     hamb.classList.toggle("active");
     body.classList.toggle("noscroll");
@@ -95,12 +95,10 @@ turn_on_camera.addEventListener("click", function() {
 });
 
 turn_off_the_camera.addEventListener("click", function() {
-
     video_stream.classList.add("display_none");
     errorMessage.style.display = 'none';
     turn_on_camera.classList.remove("display_none");
     turn_off_the_camera.classList.add("display_none");
-
 });
 
 //Формы для изменения данных распознанных лиц
@@ -112,8 +110,6 @@ show_form_buttons.forEach(function(button) { //Открытие форм
         let form_edit_popup_photo = document.querySelector("#edit_popup_photo" + formId);
         form_edit_popup_photo.classList.remove("display_none");
         form_edit_popup_photo.classList.add("edit_popup_photo");
-//        form_edit_popup_photo.style.display = "flex"; // Показать форму
-//        form_edit_popup_photo.style.alignItems = "center";
     });
 });
 
@@ -126,9 +122,4 @@ closing_form_buttons.forEach(function(button) { //Закрытие форм
         form_edit_popup_photo.classList.remove("edit_popup_photo");
         form_edit_popup_photo.classList.add("display_none");
     });
-});
-
-document.querySelector(".close_container_edit_popup_photo").addEventListener("click", function() {
-    container_popup_feedback.classList.remove("edit_popup_photo");
-    container_popup_feedback.classList.add("display_none");
 });

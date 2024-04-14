@@ -350,7 +350,7 @@ main h1{
     pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
 }
 
-.custom-select, .custom-select-edit-data-photo select {
+.custom-select select, .custom-select-edit-data-photo select {
     cursor: pointer;
     padding: 10px 20px 10px 10px;
     border: 1px solid #ccc;
@@ -359,7 +359,7 @@ main h1{
     appearance: none; /* убираем стандартные стрелки */
 }
 
-.custom-select, .custom-select-edit-data-photo select:focus {
+.custom-select select:focus, .custom-select-edit-data-photo select:focus {
     outline: none; /* убираем стандартную рамку при фокусе */
 }
 
