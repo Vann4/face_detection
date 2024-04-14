@@ -57,3 +57,18 @@ class TrimmingPhotoForm(forms.ModelForm):
 
 class AgeGenderRaceForm(forms.Form):
     path = forms.CharField()
+
+
+class UpdateDataPhotoForm(forms.Form):
+    id = forms.IntegerField()
+    name = forms.CharField(label="Имя")
+    description = forms.CharField(label="Описание", required=False)
+    age = forms.IntegerField(label="Возраст")
+    dominant_gender = forms.CharField(label="Пол")
+    dominant_race = forms.CharField(label="Раса")
+    dominant_emotion = forms.CharField(label="Эмоция")
+    users_id = forms.IntegerField(label="id пользователя")
+
+    # class Meta:
+    #     model = FaceTrimUser
+    #     fields = ['id', 'name', 'description', 'age', 'dominant_gender', 'dominant_race', 'dominant_emotion', 'users_id']

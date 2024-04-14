@@ -329,19 +329,11 @@ main h1{
     padding: 0px 0px 0px 2px;
 }
 
-footer{
-	width: 100%;
-	height: 50px;
-	background: #333;
-	border-radius: 10px;
-}
-
-.text_footer{
+.content_center{
     display: flex;
-    width: 100%;
-    position: absolute;
     justify-content: center;
-    color: white;
+    margin: 0px 0px 10px 0px;
+    font-size: 1.1em;
 }
 
 .custom-select {
@@ -358,7 +350,7 @@ footer{
     pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
 }
 
-.custom-select select {
+.custom-select, .custom-select-edit-data-photo select {
     cursor: pointer;
     padding: 10px 20px 10px 10px;
     border: 1px solid #ccc;
@@ -367,7 +359,7 @@ footer{
     appearance: none; /* убираем стандартные стрелки */
 }
 
-.custom-select select:focus {
+.custom-select, .custom-select-edit-data-photo select:focus {
     outline: none; /* убираем стандартную рамку при фокусе */
 }
 
@@ -382,6 +374,76 @@ footer{
 
 #video_stream{
     max-width: 100%;
+}
+
+.edit_popup_photo{
+    display: none;
+}
+
+.edit_popup_photo{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 10001;
+}
+
+.container_edit_popup_photo{
+    margin: 20px auto 0 auto;
+    max-height: 100%;
+    display: flex;
+    padding: 10px;
+    align-items: center;
+    flex-direction: column;
+    overflow: auto;
+    background-color: white;
+    box-shadow: 0 0 0 max(100vh, 100vw) rgba(0, 0, 0, 0.7);
+}
+
+.container_edit_popup_photo img{
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+.close_container_edit_popup_photo{
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.close_container_edit_popup_photo svg{
+    cursor: pointer;
+}
+
+#form_update_data_photo{
+    margin: 10px 0px 10px 0px;
+    font-size: 1.2em;
+}
+
+.id_name, .id_description, .id_age, .id_dominant_gender, .id_dominant_race, .id_dominant_emotion{
+    font-size: 1.2em;
+}
+
+/* Список для изменений данных о лицах */
+.edit_list_data_face{
+    width: 250px;
+    font-size: 1.2em;
+}
+
+footer{
+	width: 100%;
+	height: 50px;
+	background: #333;
+	border-radius: 10px;
+}
+
+.text_footer{
+    display: flex;
+    width: 100%;
+    position: absolute;
+    justify-content: center;
+    color: white;
 }
 
 @media (max-width: 1024px) {

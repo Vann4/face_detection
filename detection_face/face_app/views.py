@@ -1,8 +1,7 @@
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.core.files.base import ContentFile
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from .models import *
 import face_recognition
@@ -17,7 +16,7 @@ from django.views.decorators import gzip
 import base64
 import dlib
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm
 
 
 def index(request):
@@ -180,6 +179,7 @@ def working_with_images(request, users_id):
 
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
     form2 = AgeGenderRaceForm(request.POST)
+    UpdateDataPhoto = UpdateDataPhotoForm(request.POST)
 
     if users_id == request.user.id:
         if request.method == "POST":
@@ -239,16 +239,63 @@ def working_with_images(request, users_id):
                                                                                            dominant_emotion=
                                                                                            ResultDeepAnalyze[
                                                                                                'dominant_emotion'])
+            if UpdateDataPhoto.is_valid(): #Сохранение изменений, которые вносит пользователь через форму
+                id = UpdateDataPhoto.cleaned_data['id']
+                name = UpdateDataPhoto.cleaned_data['name']
+                description = UpdateDataPhoto.cleaned_data['description']
+                age = UpdateDataPhoto.cleaned_data['age']
+                dominant_gender = UpdateDataPhoto.cleaned_data['dominant_gender']
+                dominant_race = UpdateDataPhoto.cleaned_data['dominant_race']
+                dominant_emotion = UpdateDataPhoto.cleaned_data['dominant_emotion']
+                users_id = UpdateDataPhoto.cleaned_data['users_id']
+
+                FaceTrimUser.objects.filter(id=id, users_id=users_id).update(
+                    name=name,
+                    description=description,
+                    age=age,
+                    dominant_gender=dominant_gender,
+                    dominant_race=dominant_race,
+                    dominant_emotion=dominant_emotion)
+                url = reverse('working_with_images', args=[users_id])
+                return HttpResponseRedirect(url)
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
+            UpdateDataPhoto = UpdateDataPhotoForm()
 
         data = {
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
+            'UpdateDataPhotoForm': UpdateDataPhoto,
         }
 
         return render(request, 'face_app/working_with_images.html', data)
     else:
         raise PermissionDenied
+
+
+def update_data_photo(request, users_id):
+    # if request.method == 'POST':
+    #     name = request.POST.get('name')
+    #     email = request.POST.get('email')
+    #     # Здесь можно добавить код для обновления данных в базе данных
+    #     # Например:
+    #     # user = User.objects.get(pk=user_id)
+    #     # user.name = name
+    #     # user.email = email
+    #     # user.save()
+    #     return JsonResponse({'message': 'Данные успешно обновлены!'})
+    # else:
+    #     return JsonResponse({'error': 'Метод запроса должен быть POST!'}, status=400)
+
+    # instance = get_object_or_404(FaceTrimUser, pk=pk)
+    if request.method == 'POST':
+        form = UpdateDataPhotoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            url = reverse('working_with_images', args=[users_id])
+            return HttpResponseRedirect(url)
+    else:
+        form = UpdateDataPhotoForm()
+    return render(request, 'face_app/working_with_images.html', {'form': form})

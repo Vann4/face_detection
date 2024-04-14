@@ -102,3 +102,33 @@ turn_off_the_camera.addEventListener("click", function() {
     turn_off_the_camera.classList.add("display_none");
 
 });
+
+//Формы для изменения данных распознанных лиц
+const show_form_buttons = document.querySelectorAll(".button_edit_data_photo");
+
+show_form_buttons.forEach(function(button) { //Открытие форм
+    button.addEventListener("click", function() {
+        let formId = this.getAttribute("data-form-id");
+        let form_edit_popup_photo = document.querySelector("#edit_popup_photo" + formId);
+        form_edit_popup_photo.classList.remove("display_none");
+        form_edit_popup_photo.classList.add("edit_popup_photo");
+//        form_edit_popup_photo.style.display = "flex"; // Показать форму
+//        form_edit_popup_photo.style.alignItems = "center";
+    });
+});
+
+const closing_form_buttons = document.querySelectorAll(".close_container_edit_popup_photo");
+
+closing_form_buttons.forEach(function(button) { //Закрытие форм
+    button.addEventListener("click", function() {
+        let formId = this.getAttribute("id");
+        let form_edit_popup_photo = document.querySelector("#edit_popup_photo" + formId);
+        form_edit_popup_photo.classList.remove("edit_popup_photo");
+        form_edit_popup_photo.classList.add("display_none");
+    });
+});
+
+document.querySelector(".close_container_edit_popup_photo").addEventListener("click", function() {
+    container_popup_feedback.classList.remove("edit_popup_photo");
+    container_popup_feedback.classList.add("display_none");
+});
