@@ -1,6 +1,8 @@
+import os
+
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from .models import *
@@ -13,8 +15,8 @@ import cv2
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
-import base64
-import dlib
+import random
+import string
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm, DeletePhotoForm
 
@@ -174,6 +176,11 @@ def live_feed(request, users_id):
     return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
 
 
+# def get_file_extension(file_path):
+#     _, extension = os.path.splitext(file_path)
+#     return extension
+
+
 def working_with_images(request, users_id):
     face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
 
@@ -185,13 +192,21 @@ def working_with_images(request, users_id):
     if users_id == request.user.id:
         if request.method == "POST":
             if form1.is_valid():
+                # form1.cleaned_data['face_photo'] = 'your_file_name.png'
+                # print(form1.cleaned_data)
                 face = form1.save(commit=False)  # создание объекта без сохранения в БД
+                # face.face_photo = form1.cleaned_data['face_photo']
+                # print(face.face_photo)
 
                 count = 0
                 faces = face_recognition.load_image_file(face.face_photo)
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
+                # file_extension = get_file_extension(face_trim) #Получение расширения изображения
+                # length = 10
+                # letters = string.ascii_letters
+                # random_name = ''.join(random.choice(letters) for _ in range(length))
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
@@ -263,6 +278,8 @@ def working_with_images(request, users_id):
             if DeletePhoto.is_valid(): #удаление фото
                 id = DeletePhoto.cleaned_data['id']
                 FaceTrimUser.objects.filter(id=id, users_id=users_id).delete()
+                url = reverse('working_with_images', args=[users_id])
+                return HttpResponseRedirect(url)
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
@@ -278,29 +295,3 @@ def working_with_images(request, users_id):
         return render(request, 'face_app/working_with_images.html', data)
     else:
         raise PermissionDenied
-
-
-def update_data_photo(request, users_id):
-    # if request.method == 'POST':
-    #     name = request.POST.get('name')
-    #     email = request.POST.get('email')
-    #     # Здесь можно добавить код для обновления данных в базе данных
-    #     # Например:
-    #     # user = User.objects.get(pk=user_id)
-    #     # user.name = name
-    #     # user.email = email
-    #     # user.save()
-    #     return JsonResponse({'message': 'Данные успешно обновлены!'})
-    # else:
-    #     return JsonResponse({'error': 'Метод запроса должен быть POST!'}, status=400)
-
-    # instance = get_object_or_404(FaceTrimUser, pk=pk)
-    if request.method == 'POST':
-        form = UpdateDataPhotoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            url = reverse('working_with_images', args=[users_id])
-            return HttpResponseRedirect(url)
-    else:
-        form = UpdateDataPhotoForm()
-    return render(request, 'face_app/working_with_images.html', {'form': form})
