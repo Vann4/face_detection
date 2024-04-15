@@ -366,3 +366,14 @@ def working_with_images(request, users_id):
         return render(request, 'face_app/working_with_images.html', data)
     else:
         raise PermissionDenied
+
+
+
+===============================================================================================================
+            # Преобразование изображения в оттенки серого
+            # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # # Обнаружение лиц на кадре
+            # faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+            # # Рисование прямоугольников вокруг обнаруженных лиц
+            # for (x, y, w, h) in faces:
+            #     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)

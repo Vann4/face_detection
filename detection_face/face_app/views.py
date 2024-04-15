@@ -65,10 +65,9 @@ def registration(request):
     return render(request, 'face_app/registration.html', {'form': form})
 
 
-def extracting_faces(face_user, users_id, count, face_trim):
-    image_user_upload = face_recognition.load_image_file(f'face_app/media/{count}_{face_trim}')  # Загруженное фото пользователя
-    face_encoding_user_upload = face_recognition.face_encodings(image_user_upload)[0]
-    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
+def extracting_faces(faces, face_user, users_id, count, random_name, file_extension):
+    face_encoding_user_upload = face_recognition.face_encodings(faces)[0]
+    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
         face_encodings=face_encoding_user_upload)
 
     for data_face_user in face_user:
@@ -76,7 +75,7 @@ def extracting_faces(face_user, users_id, count, face_trim):
         result = face_recognition.compare_faces([face_encoding],
                                                 face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
         if result[0]:
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{face_trim}").update(
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
                 name=data_face_user.name,
                 age=data_face_user.age,
                 dominant_gender=data_face_user.dominant_gender,
@@ -110,23 +109,23 @@ def gen(camera, users_id):
             break
         else:
             if process_this_frame:
-                # Resize frame of video to 1/4 size for faster face recognition processing
+                # Изменение размера кадра видео до 1 / 4 для более быстрой обработки распознавания лиц
                 small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
 
-                # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+                # Преобразование изображения из цвета BGR (который использует OpenCV) в цвет RGB (который использует face_recognition)
                 rgb_small_frame = small_frame[:, :, ::-1]
 
-                # Find all the faces and face encodings in the current frame of video
+                # Найти все лица и кодировки лиц в текущем кадре видео
                 face_locations = face_recognition.face_locations(rgb_small_frame)
                 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
                 face_names = []
                 for face_encoding in face_encodings:
-                    # See if the face is a match for the known face(s)
+                    # Проверить, совпадает ли лицо с известным лицом (лицами).
                     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                     name = "Неизвестно"
 
-                    # Or instead, use the known face with the smallest distance to the new face
+                    # Или вместо этого использовать известное лицо с наименьшим расстоянием до нового лица
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
                     best_match_index = np.argmin(face_distances)
                     if matches[best_match_index]:
@@ -136,29 +135,21 @@ def gen(camera, users_id):
 
             process_this_frame = not process_this_frame
 
-            # Display the results
+            # Отображение результатов
             for (top, right, bottom, left), name in zip(face_locations, face_names):
-                # Scale back up face locations since the frame we detected in was scaled to 1/4 size
+                # Масштабирование местоположение лиц, поскольку кадр, в котором мы находились, был масштабирован до 1/4 размера
                 top *= 4
                 right *= 4
                 bottom *= 4
                 left *= 4
 
-                # Draw a box around the face
+                # Рамка вокруг лица
                 cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
 
-                # Draw a label with a name below the face
+                # Рамка с именем под лицом
                 cv2.rectangle(frame, (left, bottom - 35), (right, bottom), (0, 0, 255), cv2.FILLED)
-                # font = cv2.FONT_HERSHEY_DUPLEX
                 font = cv2.FONT_HERSHEY_COMPLEX
                 cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-            # Преобразование изображения в оттенки серого
-            # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            # # Обнаружение лиц на кадре
-            # faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-            # # Рисование прямоугольников вокруг обнаруженных лиц
-            # for (x, y, w, h) in faces:
-            #     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
             # Конвертирование изображения в формат JPEG
             _, jpeg = cv2.imencode('.jpg', frame)
@@ -176,9 +167,9 @@ def live_feed(request, users_id):
     return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
 
 
-# def get_file_extension(file_path):
-#     _, extension = os.path.splitext(file_path)
-#     return extension
+def get_file_extension(file_path):
+    _, extension = os.path.splitext(file_path)
+    return extension
 
 
 def working_with_images(request, users_id):
@@ -192,31 +183,27 @@ def working_with_images(request, users_id):
     if users_id == request.user.id:
         if request.method == "POST":
             if form1.is_valid():
-                # form1.cleaned_data['face_photo'] = 'your_file_name.png'
-                # print(form1.cleaned_data)
-                face = form1.save(commit=False)  # создание объекта без сохранения в БД
-                # face.face_photo = form1.cleaned_data['face_photo']
-                # print(face.face_photo)
 
+                face = form1.save(commit=False)  # создание объекта без сохранения в БД
                 count = 0
                 faces = face_recognition.load_image_file(face.face_photo)
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
-                # file_extension = get_file_extension(face_trim) #Получение расширения изображения
-                # length = 10
-                # letters = string.ascii_letters
-                # random_name = ''.join(random.choice(letters) for _ in range(length))
+                file_extension = get_file_extension(face_trim) #Получение расширения изображения
+                length = 10
+                letters = string.ascii_letters
+                random_name = ''.join(random.choice(letters) for _ in range(length)) #Рандомные буквы английского алфавита
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
 
                     face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
-                    pil_img.save(f"face_app/media/{count}_{face_trim}")
-                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{face_trim}", users_id=face.users_id)
+                    pil_img.save(f"face_app/media/{count}_{random_name}{file_extension}")
+                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{random_name}{file_extension}", users_id=face.users_id)
                     face_user_photo.save()
-                    extracting_faces(face_user, users_id, count, face_trim)
+                    extracting_faces(faces, face_user, users_id, count, random_name, file_extension)
                     count += 1
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
