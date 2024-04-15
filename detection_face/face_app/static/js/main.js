@@ -78,27 +78,49 @@ const turn_on_camera = document.querySelector("#turn_on_camera");
 const turn_off_the_camera = document.querySelector("#turn_off_the_camera");
 const errorMessage = document.querySelector("#error_message");
 
+// Открытие блока для распознавание лиц в прямом эфире
+const form_delete_photo = document.getElementById("form_delete_photo");
+// Получаем доступ к элементу input с именем "id"
+let idInput = form_delete_photo.querySelector("input[name='id']");
+// Получаем значение атрибута "value"
+let idValue = idInput.value;
+
+// Проверка, есть ли доступ к камере
+async function checkCameraAvailability() {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoInputDevices = devices.filter(device => device.kind === 'videoinput');
+    return videoInputDevices.length > 0;
+  } catch (err) {
+//    console.error('Ошибка при проверке доступности камеры:', err);
+    return false;
+  }
+}
+
 turn_on_camera.addEventListener("click", function() {
     video_stream.classList.remove("display_none");
 
     turn_on_camera.classList.add("display_none");
     turn_off_the_camera.classList.remove("display_none");
+    let url = "/live_feed/" + idValue;
+    video_stream.src = url;
 
     // вывод ошибки если камера не найдена
-    if (video_stream.complete && video_stream.naturalWidth !== 0) {
-        errorMessage.style.display = 'none';
-    } else {
-        video_stream.style.display = 'none';
+    checkCameraAvailability().then(isCameraAvailable => {
+      if (isCameraAvailable) {
+    //    console.log('Камера доступна');
+      } else {
         errorMessage.style.display = 'block';
-    }
-
+      }
+    });
 });
 
 turn_off_the_camera.addEventListener("click", function() {
-    video_stream.classList.add("display_none");
+    video_stream.style.display = 'none';
     errorMessage.style.display = 'none';
     turn_on_camera.classList.remove("display_none");
     turn_off_the_camera.classList.add("display_none");
+    video_stream.src = "";
 });
 
 //Формы для изменения данных распознанных лиц

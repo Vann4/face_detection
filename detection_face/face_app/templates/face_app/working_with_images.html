@@ -18,7 +18,7 @@
             <img src="{{i.face_photo.url}}" alt="">
             <form method="post" id="form_update_data_photo">
                 {% csrf_token %}
-                <input type="number" id="id_id" name="id" class="form-input display_none" value="{{i.id}}">
+                <input type="text" id="id_face_photo" name="face_photo" class="form-input display_none" value="{{i.face_photo}}">
 
                 <label for="id_name" class="id_name">Имя:</label><br>
                 <input type="text" id="id_name" name="name" class="form-input" style="margin-bottom: 10px;" value="{{i.name}}"><br>
@@ -109,7 +109,7 @@
             <button id="turn_on_camera" class="submit">Включить камеру</button>
             <button id="turn_off_the_camera" class="submit display_none">Выключить камеру</button>
             <div class="video_stream_img">
-                <img class="display_none" id="video_stream" src="{% url 'live_feed' user.id %}" alt="Камера">
+                <img class="display_none" id="video_stream" alt="Камера">
                 <p id="error_message" class="working_with_images_p" style="display:none;">Не удалось подключиться к камере</p>
             </div>
         </div> <!-- class="video_stream" -->
@@ -133,7 +133,7 @@
                     <p class="content_center">
                         <button class="submit button_edit_data_photo" data-form-id="{{i.id}}">Редактировать</button>
                     </p>
-                    <form method="post">
+                    <form method="post" id="form_delete_photo">
                         {% csrf_token %}
                         <input type="number" name="id" value="{{i.id}}" class="display_none">
                         <p class="content_center">

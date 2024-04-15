@@ -60,7 +60,7 @@ class AgeGenderRaceForm(forms.Form):
 
 
 class UpdateDataPhotoForm(forms.Form):
-    id = forms.IntegerField()
+    face_photo = forms.CharField(label="Фотография лица")
     name = forms.CharField(label="Имя")
     description = forms.CharField(label="Описание", required=False)
     age = forms.IntegerField(label="Возраст")

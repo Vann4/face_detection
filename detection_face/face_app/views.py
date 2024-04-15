@@ -256,7 +256,7 @@ def working_with_images(request, users_id):
                                                                                            ResultDeepAnalyze[
                                                                                                'dominant_emotion'])
             if UpdateDataPhoto.is_valid(): #Сохранение изменений, которые вносит пользователь через форму
-                id = UpdateDataPhoto.cleaned_data['id']
+                face_photo = UpdateDataPhoto.cleaned_data['face_photo']
                 name = UpdateDataPhoto.cleaned_data['name']
                 description = UpdateDataPhoto.cleaned_data['description']
                 age = UpdateDataPhoto.cleaned_data['age']
@@ -265,7 +265,7 @@ def working_with_images(request, users_id):
                 dominant_emotion = UpdateDataPhoto.cleaned_data['dominant_emotion']
                 users_id = UpdateDataPhoto.cleaned_data['users_id']
 
-                FaceTrimUser.objects.filter(id=id, users_id=users_id).update(
+                FaceTrimUser.objects.filter(face_photo=face_photo, users_id=users_id).update(
                     name=name,
                     description=description,
                     age=age,
@@ -284,12 +284,14 @@ def working_with_images(request, users_id):
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
             UpdateDataPhoto = UpdateDataPhotoForm()
+            DeletePhoto = DeletePhotoForm()
 
         data = {
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
             'UpdateDataPhotoForm': UpdateDataPhoto,
+            'DeletePhoto': DeletePhoto
         }
 
         return render(request, 'face_app/working_with_images.html', data)
