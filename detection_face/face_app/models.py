@@ -30,12 +30,13 @@ class FaceTrimUser(models.Model):
 
 
 class Feedback(models.Model):
+    name = models.TextField()
     descriptions = models.TextField()
-    users_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    email = models.TextField()
 
     class Meta:
         verbose_name = 'Обратная связь'
         verbose_name_plural = 'Обратная связь'
 
     def __str__(self):
-        return self.users_id.email
+        return self.email

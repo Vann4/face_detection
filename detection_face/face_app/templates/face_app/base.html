@@ -22,18 +22,22 @@
             {% csrf_token %}
             <div id="close-button">
                 <h2>Обратная связь с разработчиком</h2>
-                <svg width="30px" height="25px" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg id="close_button_popup_feedback" width="30px" height="25px" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.09082 0.03125L22.9999 22.0294L20.909 24.2292L-8.73579e-05 2.23106L2.09082 0.03125Z" fill="#333333" />
                     <path d="M0 22.0295L20.9091 0.0314368L23 2.23125L2.09091 24.2294L0 22.0295Z" fill="#333333" />
                 </svg>
             </div>
 
-            <label for="id_descriptions">Описание:</label>
-            <input type="text" name="descriptions" class="form-input" required id="id_descriptions">
+            <label for="id_name" class="id_name">Имя:</label>
+            <input type="text" name="name" class="form-input margin_bottom" required id="id_name"><br>
 
-            <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
+            <label for="id_descriptions" class="id_description">Описание:</label>
+            <input type="text" name="descriptions" class="form-input margin_bottom" required id="id_descriptions"><br>
 
-            <p><button type="submit" class="submit">Отправить</button></p>
+            <label for="id_email" class="id_name">Почта:</label>
+            <input type="email" name="email" class="form-input margin_bottom" required id="id_email">
+
+            <p style="margin: 0px;"><button type="submit" class="submit">Отправить</button></p>
         </form>
 
     </div> <!-- class="popup_feedback" -->
@@ -60,15 +64,15 @@
                 <img src="{% static 'img/logo.png' %}" alt="Логотип">
                 <ul class="menu" id="menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
+                    <li><a id="popup_feedback">Обратная связь</a></li>
                     {% if user.is_authenticated %}
-                        <li><a id="popup_feedback">Обратная связь</a></li>
                         <li><a href="{% url 'working_with_images' users_id=user.id %}">Распознавание лиц</a></li>
                     {% else %}
                     {% endif %}
                 </ul>
                 <div class="auth">
                     {% if user.is_authenticated %}
-                        <li> {{user.username}} | <a href="{% url 'logout' %}">Выйти</a></li>
+                        <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
                         <li><a href="{% url 'login' %}">Войти</a> | <a href="{% url 'registration' %}">Регистрация</a></li>
                     {% endif %}

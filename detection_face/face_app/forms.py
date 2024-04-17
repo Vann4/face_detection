@@ -42,11 +42,13 @@ class RegisterUserForm(forms.ModelForm):
 
 
 class FeedbackForm(forms.ModelForm):
-    descriptions = forms.CharField(label='Описание', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    name = forms.CharField(label='Имя')
+    descriptions = forms.CharField(label='Описание')
+    email = forms.CharField(label='Почта', widget=forms.TextInput(attrs={'class': 'form-input'}))
 
     class Meta:
         model = Feedback
-        fields = ['descriptions', 'users_id']
+        fields = ['name', 'descriptions', 'email']
 
 
 class TrimmingPhotoForm(forms.ModelForm):

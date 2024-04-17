@@ -223,7 +223,6 @@ main h1{
 #close-button{
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
 }
 
 #close-button h2{
@@ -412,7 +411,7 @@ main h1{
     justify-content: flex-end;
 }
 
-.close_container_edit_popup_photo svg{
+.close_container_edit_popup_photo svg, #close-button svg{
     cursor: pointer;
 }
 
@@ -421,8 +420,12 @@ main h1{
     font-size: 1.2em;
 }
 
-.id_name, .id_description, .id_age, .id_dominant_gender, .id_dominant_race, .id_dominant_emotion{
+.id_name, .id_description, .id_age, .id_dominant_gender, .id_dominant_race, .id_dominant_emotion, .id_email{
     font-size: 1.2em;
+}
+
+.margin_bottom{
+    margin-bottom: 10px;
 }
 
 /* Список для изменений данных о лицах */
