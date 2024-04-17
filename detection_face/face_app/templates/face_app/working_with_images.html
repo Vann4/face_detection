@@ -79,7 +79,7 @@
 <main>
     <div class="content">
         <div class="form_trim">
-            <p class="working_with_images_p">Распознать лицо на изображении:</p>
+            <p class="working_with_images_p">Распознать лица на изображении:</p>
             <form class="working_with_images_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <p><tr><th><label for="face_photo">Загрузить изображение: </label></th><td>
@@ -155,4 +155,12 @@
 
 {% endblock scripts %}
 
-{% block footer %}{% endblock footer %}
+{% block footer %}
+
+<footer>
+    <div class="text_footer">
+        <h3>© 2024 Все права защищены</h3>
+    </div>
+</footer>
+
+{% endblock footer %}

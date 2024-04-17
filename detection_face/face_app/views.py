@@ -65,26 +65,6 @@ def registration(request):
     return render(request, 'face_app/registration.html', {'form': form})
 
 
-def extracting_faces(faces, face_user, users_id, count, random_name, file_extension):
-    face_encoding_user_upload = face_recognition.face_encodings(faces)[0]
-    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
-        face_encodings=face_encoding_user_upload)
-
-    for data_face_user in face_user:
-        face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
-        result = face_recognition.compare_faces([face_encoding],
-                                                face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
-        if result[0]:
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
-                name=data_face_user.name,
-                age=data_face_user.age,
-                dominant_gender=data_face_user.dominant_gender,
-                dominant_race=data_face_user.dominant_race)
-            break
-        else:
-            pass
-
-
 # face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 known_face_encodings = []
@@ -165,6 +145,26 @@ def live_feed(request, users_id):
         pass
 
     return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
+
+
+def extracting_faces(faces, face_user, users_id, count, random_name, file_extension):
+    face_encoding_user_upload = face_recognition.face_encodings(faces)[0]
+    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
+        face_encodings=face_encoding_user_upload)
+
+    for data_face_user in face_user:
+        face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
+        result = face_recognition.compare_faces([face_encoding],
+                                                face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
+        if result[0]:
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
+                name=data_face_user.name,
+                age=data_face_user.age,
+                dominant_gender=data_face_user.dominant_gender,
+                dominant_race=data_face_user.dominant_race)
+            break
+        else:
+            pass
 
 
 def get_file_extension(file_path):
