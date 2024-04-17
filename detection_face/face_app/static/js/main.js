@@ -1,6 +1,6 @@
 const container_popup_feedback = document.querySelector("#container_popup_feedback");
 
-document.getElementById("close-button").addEventListener("click", function() {
+document.getElementById("close_button_popup_feedback").addEventListener("click", function() {
     container_popup_feedback.classList.remove("container_popup_feedback");
     container_popup_feedback.classList.add("display_none_container_popup_feedback");
 });
@@ -124,7 +124,7 @@ turn_off_the_camera.addEventListener("click", function() {
 });
 
 //Формы для изменения данных распознанных лиц
-const show_form_buttons = document.querySelectorAll(".button_edit_data_photo");
+const show_form_buttons = document.querySelectorAll(".button_edit_data_photo"); //Кнопка открытия формы
 
 show_form_buttons.forEach(function(button) { //Открытие форм
     button.addEventListener("click", function() {
@@ -135,7 +135,7 @@ show_form_buttons.forEach(function(button) { //Открытие форм
     });
 });
 
-const closing_form_buttons = document.querySelectorAll(".close_container_edit_popup_photo");
+const closing_form_buttons = document.querySelectorAll(".close_button_popup_edit_data_photo"); //Кнопка закрытия формы
 
 closing_form_buttons.forEach(function(button) { //Закрытие форм
     button.addEventListener("click", function() {
