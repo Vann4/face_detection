@@ -60,13 +60,14 @@
                         <span class="bar"></span>
                     </div>
                 </div>
-                <!-- <a href="#" class="logo" id="logo">Logo</a> -->
-                <img src="{% static 'img/logo.png' %}" alt="Логотип">
+                 <a href="{% url 'index' %}" class="logo" id="logo">
+                     <img src="{% static 'img/logo.png' %}" alt="Логотип">
+                 </a>
                 <ul class="menu" id="menu">
                     <li><a href="{% url 'index' %}">Главная</a></li>
                     <li><a id="popup_feedback">Обратная связь</a></li>
                     {% if user.is_authenticated %}
-                        <li><a href="{% url 'working_with_images' users_id=user.id %}">Распознавание лиц</a></li>
+                        <li><a href="{% url 'working_with_images' user.id %}">Распознавание лиц</a></li>
                     {% else %}
                     {% endif %}
                 </ul>
@@ -90,7 +91,39 @@
 {% block footer %}
 
 <footer>
+    <div class="info_footer">
+        <div class="menu_footer">
+            <ul>
+                <li class="styling_a_in_the_footer">
+                    <p>Навигация</p>
+                    <a href="{% url 'index' %}">Главная</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'working_with_images' user.id %}">Распознавание лиц</a>
+                    {% else %}
+                    {% endif %}
+                </li>
+            </ul>
+        </div><!-- class="menu_footer" -->
 
+        <div class="social_networks">
+            <ul>
+                <li class="styling_a_in_the_footer">
+                    <p>Наши социальные сети</p>
+                    <a href="https://vk.com/shumpoliteh">Вконтакте</a>
+                    <a href="https://t.me/shpt121canal">Телеграмм</a>
+                </li>
+            </ul>
+        </div><!-- class="social_networks" -->
+
+        <div class="contacts">
+            <ul>
+                <li style="display: inline-block;">
+                    <p>Контакты</p>
+                    <p>pit669@mail.ru</p>
+                </li>
+            </ul>
+        </div><!-- class="contacts" -->
+    </div><!-- class="info_footer" -->
 </footer>
 
 {% endblock footer %}
