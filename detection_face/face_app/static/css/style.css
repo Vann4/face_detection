@@ -130,10 +130,6 @@ header{
     color: #FFBF40;
 }
 
-.logo{
-	width: 6%;
-}
-
 .logo img{
 	height: 100%;
 }
@@ -470,6 +466,10 @@ footer{
     flex-direction: column;
 }
 
+.styling_p_in_the_footer, .styling_a_in_the_footer{
+    color: #FFBF40;
+}
+
 @media (max-width: 1024px) {
 
     header{
@@ -632,3 +632,17 @@ footer{
     }
 
 } /*@media (max-width: 1000px)*/
+
+@media (max-width: 700px) {
+    .info_footer {
+        display: flex;
+        color: white;
+        font-size: 1.3em;
+        align-items: center;
+        flex-direction: column;
+    }
+    .menu_footer, .social_networks, .contacts{
+        width: 250px;
+    }
+
+}
