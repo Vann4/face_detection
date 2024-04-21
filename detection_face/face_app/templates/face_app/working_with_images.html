@@ -18,7 +18,7 @@
             <img src="{{i.face_photo.url}}" alt="">
             <form method="post" id="form_update_data_photo">
                 {% csrf_token %}
-                <input type="text" id="id_face_photo" name="face_photo" class="form-input display_none" value="{{i.face_photo}}">
+                <input type="number" id="id_id_photo" name="id_photo" class="form-input display_none" value="{{i.id}}">
 
                 <label for="id_name" class="id_name">Имя:</label><br>
                 <input type="text" id="id_name" name="name" class="form-input margin_bottom" value="{{i.name}}"><br>
@@ -30,7 +30,7 @@
                 <input type="number" id="id_age" name="age" class="form-input margin_bottom" value="{{i.age}}"><br>
 
                 <label class="id_dominant_gender">Пол:</label><br>
-                <div class="custom-select-edit-data-photo">
+                <div class="custom-select-edit-data-photo margin_bottom">
                     <select name="dominant_gender" required class="edit_list_data_face" size="2">
                         <option name="dominant_gender" selected value="{{ i.dominant_gender }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_gender }}</option>
                         <option name="dominant_gender" value="Мужчина">Мужчина</option>
@@ -39,7 +39,7 @@
                 </div>
 
                 <label class="id_dominant_race">Раса:</label><br>
-                <div class="custom-select-edit-data-photo">
+                <div class="custom-select-edit-data-photo margin_bottom">
                     <select name="dominant_race" required class="edit_list_data_face" size="3">
                         <option name="dominant_race" selected value="{{ i.dominant_race }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_race }}</option>
                         <option name="dominant_race" value="Индейцы">Индейцы</option>
@@ -52,7 +52,7 @@
                 </div>
 
                 <label class="id_dominant_emotion">Эмоция:</label><br>
-                <div class="custom-select-edit-data-photo">
+                <div class="custom-select-edit-data-photo margin_bottom">
                     <select name="dominant_emotion" required class="edit_list_data_face" size="3">
                         <option name="dominant_emotion" selected value="{{ i.dominant_emotion }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_emotion }}</option>
                         <option name="dominant_emotion" value="Счастье">Счастье</option>
@@ -64,8 +64,6 @@
                         <option name="dominant_emotion" value="Нет эмоций">Нет эмоций</option>
                     </select>
                 </div>
-
-                <input type="number" id="id_users_id" name="users_id" value="{{user.id}}" class="form-input display_none"><br>
 
                 <p class="content_center"><button type="submit" class="submit">Сохранить</button></p>
             </form>

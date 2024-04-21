@@ -62,14 +62,13 @@ class AgeGenderRaceForm(forms.Form):
 
 
 class UpdateDataPhotoForm(forms.Form):
-    face_photo = forms.CharField(label="Фотография лица")
+    id_photo = forms.IntegerField()
     name = forms.CharField(label="Имя")
     description = forms.CharField(label="Описание", required=False)
     age = forms.IntegerField(label="Возраст", required=False)
     dominant_gender = forms.CharField(label="Пол")
     dominant_race = forms.CharField(label="Раса")
     dominant_emotion = forms.CharField(label="Эмоция")
-    users_id = forms.IntegerField(label="id пользователя")
 
 
 class DeletePhotoForm(forms.Form):

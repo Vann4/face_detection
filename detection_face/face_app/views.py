@@ -243,16 +243,15 @@ def working_with_images(request, users_id):
                                                                                            ResultDeepAnalyze[
                                                                                                'dominant_emotion'])
             if UpdateDataPhoto.is_valid(): #Сохранение изменений, которые вносит пользователь через форму
-                face_photo = UpdateDataPhoto.cleaned_data['face_photo']
+                id_photo = UpdateDataPhoto.cleaned_data['id_photo']
                 name = UpdateDataPhoto.cleaned_data['name']
                 description = UpdateDataPhoto.cleaned_data['description']
                 age = UpdateDataPhoto.cleaned_data['age']
                 dominant_gender = UpdateDataPhoto.cleaned_data['dominant_gender']
                 dominant_race = UpdateDataPhoto.cleaned_data['dominant_race']
                 dominant_emotion = UpdateDataPhoto.cleaned_data['dominant_emotion']
-                users_id = UpdateDataPhoto.cleaned_data['users_id']
 
-                FaceTrimUser.objects.filter(face_photo=face_photo, users_id=users_id).update(
+                FaceTrimUser.objects.filter(id=id_photo, users_id=users_id).update(
                     name=name,
                     description=description,
                     age=age,
