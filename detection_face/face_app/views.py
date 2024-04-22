@@ -2,6 +2,7 @@ import os
 
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -18,7 +19,7 @@ from django.views.decorators import gzip
 import random
 import string
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm, DeletePhotoForm
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm
 
 
 def index(request):
@@ -179,6 +180,7 @@ def working_with_images(request, users_id):
     form2 = AgeGenderRaceForm(request.POST)
     UpdateDataPhoto = UpdateDataPhotoForm(request.POST)
     DeletePhoto = DeletePhotoForm(request.POST)
+    FilterForDataOutput = FilterForDataOutputForm(request.POST)
 
     if users_id == request.user.id:
         if request.method == "POST":
@@ -190,10 +192,11 @@ def working_with_images(request, users_id):
                 faces_locations = face_recognition.face_locations(faces)
 
                 face_trim = f"{face.face_photo}"
-                file_extension = get_file_extension(face_trim) #Получение расширения изображения
+
+                file_extension = get_file_extension(face_trim)  # Получение расширения изображения
                 length = 10
                 letters = string.ascii_letters
-                random_name = ''.join(random.choice(letters) for _ in range(length)) #Рандомные буквы английского алфавита
+                random_name = ''.join(random.choice(letters) for _ in range(length))  # Рандомные буквы английского алфавита
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
@@ -201,7 +204,8 @@ def working_with_images(request, users_id):
                     face_img = faces[top:bottom, left:right]
                     pil_img = Image.fromarray(face_img)
                     pil_img.save(f"face_app/media/{count}_{random_name}{file_extension}")
-                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{random_name}{file_extension}", users_id=face.users_id)
+                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{random_name}{file_extension}",
+                                                   users_id=face.users_id)
                     face_user_photo.save()
                     extracting_faces(faces, face_user, users_id, count, random_name, file_extension)
                     count += 1
@@ -242,7 +246,7 @@ def working_with_images(request, users_id):
                                                                                            dominant_emotion=
                                                                                            ResultDeepAnalyze[
                                                                                                'dominant_emotion'])
-            if UpdateDataPhoto.is_valid(): #Сохранение изменений, которые вносит пользователь через форму
+            if UpdateDataPhoto.is_valid():  # Сохранение изменений, которые вносит пользователь через форму
                 id_photo = UpdateDataPhoto.cleaned_data['id_photo']
                 name = UpdateDataPhoto.cleaned_data['name']
                 description = UpdateDataPhoto.cleaned_data['description']
@@ -261,23 +265,50 @@ def working_with_images(request, users_id):
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
 
-            if DeletePhoto.is_valid(): #удаление фото
+            if DeletePhoto.is_valid():  # удаление фото
                 id = DeletePhoto.cleaned_data['id']
                 FaceTrimUser.objects.filter(id=id, users_id=users_id).delete()
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
+
+            if FilterForDataOutput.is_valid():  # Фильтр для вывода данных
+                name_filter = FilterForDataOutput.cleaned_data['name_filter']
+                description_filter = FilterForDataOutput.cleaned_data['description_filter']
+                age_filter = FilterForDataOutput.cleaned_data['age_filter']
+                dominant_gender_filter = FilterForDataOutput.cleaned_data['dominant_gender_filter']
+                dominant_race_filter = FilterForDataOutput.cleaned_data['dominant_race_filter']
+                dominant_emotion_filter = FilterForDataOutput.cleaned_data['dominant_emotion_filter']
+                download_date_filter = FilterForDataOutput.cleaned_data['download_date_filter']
+
+                filtered_face_trim_user = FaceTrimUser.objects.filter(
+                    Q(name=name_filter) | Q(description=description_filter) | Q(age=age_filter)
+                    | Q(dominant_gender=dominant_gender_filter)
+                    | Q(dominant_race=dominant_race_filter)
+                    | Q(dominant_emotion=dominant_emotion_filter)
+                    | Q(download_date=download_date_filter),
+                    users_id=users_id)
+
+                data = {
+                    'filtered_face_trim_user': filtered_face_trim_user,
+                    'FilterForDataOutput': FilterForDataOutput
+                }
+
+                return render(request, 'face_app/working_with_images.html', data)
+
         else:
             form1 = TrimmingPhotoForm()
             form2 = AgeGenderRaceForm()
             UpdateDataPhoto = UpdateDataPhotoForm()
             DeletePhoto = DeletePhotoForm()
+            FilterForDataOutput = FilterForDataOutputForm()
 
         data = {
             'face_user': face_user,
             'form1': form1,
             'form2': form2,
-            'UpdateDataPhotoForm': UpdateDataPhoto,
-            'DeletePhoto': DeletePhoto
+            'UpdateDataPhoto': UpdateDataPhoto,
+            'DeletePhoto': DeletePhoto,
+            'FilterForDataOutput': FilterForDataOutput
         }
 
         return render(request, 'face_app/working_with_images.html', data)

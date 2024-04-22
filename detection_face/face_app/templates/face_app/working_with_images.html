@@ -70,10 +70,77 @@
         </div> <!-- container_edit_popup_photo -->
     </div> <!-- edit_popup_photo -->
 {% endfor %}
+
+<!-- Модальное окно для редактирования отфильтрованных данных -->
+{% for i in filtered_face_trim_user %}
+    <div class="display_none" id="edit_popup_photo{{ i.id }}">
+        <div class="container_edit_popup_photo">
+
+            <div class="close_container_edit_popup_photo" id="{{ i.id }}">
+                <svg class="close_button_popup_edit_data_photo" id="{{ i.id }}" width="30px" height="25px" viewBox="0 0 23 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.09082 0.03125L22.9999 22.0294L20.909 24.2292L-8.73579e-05 2.23106L2.09082 0.03125Z" fill="#333333" />
+                    <path d="M0 22.0295L20.9091 0.0314368L23 2.23125L2.09091 24.2294L0 22.0295Z" fill="#333333" />
+                </svg>
+            </div>
+
+            <img src="{{i.face_photo.url}}" alt="">
+            <form method="post" id="form_update_data_photo">
+                {% csrf_token %}
+                <input type="number" id="id_id_photo" name="id_photo" class="form-input display_none" value="{{i.id}}">
+
+                <label for="id_name" class="id_name">Имя:</label><br>
+                <input type="text" id="id_name" name="name" class="form-input margin_bottom" value="{{i.name}}"><br>
+
+                <label for="id_description" class="id_description">Описание:</label><br>
+                <input type="text" id="id_description" name="description" class="form-input margin_bottom" value="{{i.description}}"><br>
+
+                <label for="id_age" class="id_age">Возраст:</label><br>
+                <input type="number" id="id_age" name="age" class="form-input margin_bottom" value="{{i.age}}"><br>
+
+                <label class="id_dominant_gender">Пол:</label><br>
+                <div class="custom-select-edit-data-photo margin_bottom">
+                    <select name="dominant_gender" required class="edit_list_data_face" size="2">
+                        <option name="dominant_gender" selected value="{{ i.dominant_gender }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_gender }}</option>
+                        <option name="dominant_gender" value="Мужчина">Мужчина</option>
+                        <option name="dominant_gender" value="Женщина">Женщина</option>
+                    </select>
+                </div>
+
+                <label class="id_dominant_race">Раса:</label><br>
+                <div class="custom-select-edit-data-photo margin_bottom">
+                    <select name="dominant_race" required class="edit_list_data_face" size="3">
+                        <option name="dominant_race" selected value="{{ i.dominant_race }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_race }}</option>
+                        <option name="dominant_race" value="Индейцы">Индейцы</option>
+                        <option name="dominant_race" value="Азиаты">Азиаты</option>
+                        <option name="dominant_race" value="Латиноамериканцы">Латиноамериканцы</option>
+                        <option name="dominant_race" value="Африканцы">Африканцы</option>
+                        <option name="dominant_race" value="Средневосточная">Средневосточная</option>
+                        <option name="dominant_race" value="Европейцы">Европейцы</option>
+                    </select>
+                </div>
+
+                <label class="id_dominant_emotion">Эмоция:</label><br>
+                <div class="custom-select-edit-data-photo margin_bottom">
+                    <select name="dominant_emotion" required class="edit_list_data_face" size="3">
+                        <option name="dominant_emotion" selected value="{{ i.dominant_emotion }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_emotion }}</option>
+                        <option name="dominant_emotion" value="Счастье">Счастье</option>
+                        <option name="dominant_emotion" value="Грусть">Грусть</option>
+                        <option name="dominant_emotion" value="Гнев">Гнев</option>
+                        <option name="dominant_emotion" value="Удивление">Удивление</option>
+                        <option name="dominant_emotion" value="Страх">Страх</option>
+                        <option name="dominant_emotion" value="Отвращение">Отвращение</option>
+                        <option name="dominant_emotion" value="Нет эмоций">Нет эмоций</option>
+                    </select>
+                </div>
+
+                <p class="content_center"><button type="submit" class="submit">Сохранить</button></p>
+            </form>
+        </div> <!-- container_edit_popup_photo -->
+    </div> <!-- edit_popup_photo -->
+{% endfor %}
 {% endblock edit_popup %}
 
 {% block main %}
-
 <main>
     <div class="content">
         <div class="form_trim">
@@ -116,6 +183,79 @@
         <div class="img_trim">
             <p class="working_with_images_p_images">Распознанные лица:</p>
 
+            <div class="filter"> <!-- Форма фильтра -->
+                <p class="filter_tag_p">Фильтр:</p>
+                <form method="post" id="form_filter_photo">
+                    {% csrf_token %}
+
+                    <div class="name_filter">
+                        <label for="name_filter" class="id_age">Имя:</label><br>
+                        <input type="text" id="name_filter" name="name_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Имя">
+                    </div>
+
+                    <div class="description_filter">
+                        <label for="description_filter" class="id_age">Описание:</label><br>
+                        <input type="text" id="description_filter" name="description_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Описание">
+                    </div>
+
+                    <div class="age_filter">
+                        <label for="age_filter" class="id_age">Возраст:</label><br>
+                        <input type="number" id="age_filter" name="age_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Возраст">
+                    </div>
+
+                    <div class="dominant_gender_filter">
+                        <label class="id_dominant_race">Пол:</label><br>
+                        <select name="dominant_gender_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                            <option name="dominant_gender_filter" selected>---------</option>
+                            <option name="dominant_gender_filter" value="Мужчина">Мужчина</option>
+                            <option name="dominant_gender_filter" value="Женщина">Женщина</option>
+                        </select>
+                    </div>
+
+                    <div class="dominant_race_filter">
+                        <label class="id_dominant_race">Раса:</label><br>
+                        <select name="dominant_race_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                            <option name="dominant_race_filter" selected>---------</option>
+                            <option name="dominant_race_filter" value="Индейцы">Индейцы</option>
+                            <option name="dominant_race_filter" value="Азиаты">Азиаты</option>
+                            <option name="dominant_race_filter" value="Латиноамериканцы">Латиноамериканцы</option>
+                            <option name="dominant_race_filter" value="Африканцы">Африканцы</option>
+                            <option name="dominant_race_filter" value="Средневосточная">Средневосточная</option>
+                            <option name="dominant_race_filter" value="Европейцы">Европейцы</option>
+                        </select>
+                    </div>
+
+                    <div class="dominant_emotion_filter">
+                        <label class="id_dominant_race">Эмоция:</label><br>
+                        <select name="dominant_emotion_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                            <option name="dominant_emotion_filter" selected value="">---------</option>
+                            <option name="dominant_emotion_filter" value="Счастье">Счастье</option>
+                            <option name="dominant_emotion_filter" value="Грусть">Грусть</option>
+                            <option name="dominant_emotion_filter" value="Гнев">Гнев</option>
+                            <option name="dominant_emotion_filter" value="Удивление">Удивление</option>
+                            <option name="dominant_emotion_filter" value="Страх">Страх</option>
+                            <option name="dominant_emotion_filter" value="Отвращение">Отвращение</option>
+                            <option name="dominant_emotion_filter" value="Нет эмоций">Нет эмоций</option>
+                        </select>
+                    </div>
+
+                    <div class="download_date_filter">
+                        <label for="download_date_filter" class="id_age">Дата загрузки:</label><br>
+                        <input type="date" id="download_date_filter" name="download_date_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Дата">
+                    </div>
+
+                    <div class="margin_bottom">
+                        <button type="submit" class="submit">Применить</button>
+                    </div><!-- margin_bottom -->
+                </form>
+
+                <div class="margin_bottom filter_reset_color">
+                    <button class="submit">
+                        <a class="filter_reset_color" href="{% url 'working_with_images' user.id %}">Сбросить фильтр</a>
+                    </button>
+                </div><!-- margin_bottom -->
+           </div><!-- class="filter" -->
+
             <div class="user_image_trim">
                 {% for i in face_user %}
                 <div class="user_img">
@@ -140,6 +280,32 @@
                     </form>
                 </div><!-- class="user_img" -->
                 {% endfor %}
+
+                {% for i in filtered_face_trim_user %}
+                <div class="user_img">
+                    <img src="{{i.face_photo.url}}" alt="">
+                    <p class="working_with_images_image_tag_p">Изображение: {{i.face_photo}}</p>
+                    <p class="working_with_images_image_tag_p">Имя: {{i.name}}</p>
+                    <p class="working_with_images_image_tag_p">Описание: {{i.description}}</p>
+                    <p class="working_with_images_image_tag_p">Возраст: {{i.age}}</p>
+                    <p class="working_with_images_image_tag_p">Пол: {{i.dominant_gender}}</p>
+                    <p class="working_with_images_image_tag_p">Раса: {{i.dominant_race}}</p>
+                    <p class="working_with_images_image_tag_p">Эмоция: {{i.dominant_emotion}}</p>
+                    <p class="working_with_images_image_tag_p">Дата загрузки: {{ i.download_date|date:"d F Y" }}</p>
+
+                    <p class="content_center">
+                        <button class="submit button_edit_data_photo" data-form-id="{{i.id}}">Редактировать</button>
+                    </p>
+                    <form method="post" id="form_delete_photo">
+                        {% csrf_token %}
+                        <input type="number" name="id" value="{{i.id}}" class="display_none">
+                        <p class="content_center">
+                            <button type="submit" class="submit">Удалить</button>
+                        </p>
+                    </form>
+                </div><!-- class="user_img" -->
+                {% endfor %}
+
             </div><!-- class="table_image_trim" -->
         </div><!-- class="img_trim" -->
     </div><!-- class="content" -->

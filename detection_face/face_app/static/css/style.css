@@ -250,8 +250,8 @@ main h1{
 }
 
 .form-input{
-    height: 20px;
-    font-size: 1.1em;
+    height: 30px;
+    font-size: 1.2em;
 }
 
 .submit{
@@ -305,6 +305,31 @@ main h1{
     font-size: 1.5em;
     text-align: center;
 }
+
+/* стили фильтрации изображений */
+.filter{
+    max-width: 900px;
+}
+
+#form_filter_photo{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.download_date_filter{
+    width: 100%;
+}
+
+.filter_reset_color a{
+    color: black;
+}
+
+.filter_tag_p{
+    font-size: 1.3em;
+}
+
+/* Конец фильтрации изображений */
 
 .user_image_trim{
     width: 80vw;
@@ -645,4 +670,17 @@ footer{
         width: 250px;
     }
 
+}
+
+@media (max-width: 570px) {
+    #form_filter_photo {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: center;
+    }
+    .filter_reset_color{
+        display: flex;
+        justify-content: center;
+    }
 }

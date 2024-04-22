@@ -73,3 +73,13 @@ class UpdateDataPhotoForm(forms.Form):
 
 class DeletePhotoForm(forms.Form):
     id = forms.IntegerField()
+
+
+class FilterForDataOutputForm(forms.Form):
+    name_filter = forms.CharField(label="Имя", required=False)
+    description_filter = forms.CharField(label="Описание", required=False)
+    age_filter = forms.IntegerField(label="Возраст", required=False)
+    dominant_gender_filter = forms.CharField(label="Пол", required=False)
+    dominant_race_filter = forms.CharField(label="Раса", required=False)
+    dominant_emotion_filter = forms.CharField(label="Эмоция", required=False)
+    download_date_filter = forms.DateField(label="Дата загрузки", required=False)

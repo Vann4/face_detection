@@ -78,13 +78,6 @@ const turn_on_camera = document.querySelector("#turn_on_camera");
 const turn_off_the_camera = document.querySelector("#turn_off_the_camera");
 const errorMessage = document.querySelector("#error_message");
 
-// Открытие блока для распознавание лиц в прямом эфире
-const form_delete_photo = document.getElementById("form_delete_photo");
-// Получаем доступ к элементу input с именем "id"
-let idInput = form_delete_photo.querySelector("input[name='id']");
-// Получаем значение атрибута "value"
-let idValue = idInput.value;
-
 // Проверка, есть ли доступ к камере
 async function checkCameraAvailability() {
   try {
@@ -122,6 +115,13 @@ turn_off_the_camera.addEventListener("click", function() {
     turn_off_the_camera.classList.add("display_none");
     video_stream.src = "";
 });
+
+// Открытие блока для распознавание лиц в прямом эфире
+const form_delete_photo = document.getElementById("form_delete_photo");
+// Получаем доступ к элементу input с именем "id"
+let idInput = form_delete_photo.querySelector("input[name='id']");
+// Получаем значение атрибута "value"
+let idValue = idInput.value;
 
 //Формы для изменения данных распознанных лиц
 const show_form_buttons = document.querySelectorAll(".button_edit_data_photo"); //Кнопка открытия формы
