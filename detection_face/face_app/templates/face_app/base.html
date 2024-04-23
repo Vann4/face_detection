@@ -75,7 +75,7 @@
                     {% if user.is_authenticated %}
                         <li><a href="{% url 'logout' %}">Выйти</a></li>
                     {% else %}
-                        <li><a href="{% url 'login' %}">Войти</a> | <a href="{% url 'registration' %}">Регистрация</a></li>
+                        <li><a href="{% url 'login' %}">Войти</a> | <a href="{% url 'registration' %}">Зарегистрироваться</a></li>
                     {% endif %}
                 </div><!-- class="auth" -->
             </div><!-- class="navbar__wrap" -->

@@ -144,6 +144,7 @@ header{
 }
 
 .auth{
+    width: 500px;
 	display: flex;
     justify-content: space-evenly;
     align-items: center;
@@ -246,7 +247,7 @@ main h1{
 }
 
 .bx-wrapper{
-    max-width: 91% !important;
+    max-width: 70% !important;
 }
 
 .form-input{
@@ -472,7 +473,7 @@ footer{
 
 .info_footer{
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
     color: white;
     font-size: 1.3em;
 }
