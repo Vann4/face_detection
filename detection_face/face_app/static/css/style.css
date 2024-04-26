@@ -144,11 +144,10 @@ header{
 }
 
 .auth{
-    width: 500px;
 	display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-end;
     align-items: center;
-    margin-right: 20px;
+    margin-right: 5px;
     font-size: 1.8em;
 }
 
@@ -251,7 +250,7 @@ main h1{
 }
 
 .form-input{
-    height: 30px;
+    height: 22px;
     font-size: 1.2em;
 }
 
@@ -494,6 +493,12 @@ footer{
 
 .styling_p_in_the_footer, .styling_a_in_the_footer{
     color: #FFBF40;
+}
+
+.content_user_profile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 @media (max-width: 1024px) {

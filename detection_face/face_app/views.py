@@ -1,11 +1,15 @@
 import os
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
+from django.views.generic import UpdateView
+
 from .models import *
 import face_recognition
 from PIL import Image
@@ -19,7 +23,8 @@ from django.views.decorators import gzip
 import random
 import string
 
-from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm
+from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, \
+    UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm, UserProfileForm
 
 
 def index(request):
@@ -64,6 +69,19 @@ def registration(request):
     else:
         form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
+
+
+class UserProfile(LoginRequiredMixin, UpdateView):
+    model = get_user_model()
+    form_class = UserProfileForm
+    template_name = 'face_app/user_profile.html'
+    extra_context = {'title': "Профиль пользователя"}
+
+    def get_success_url(self):
+        return reverse_lazy('user_profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
 
 
 # face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')

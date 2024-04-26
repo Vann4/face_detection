@@ -1,0 +1,23 @@
+{% extends 'face_app/base.html' %}
+ 
+{% block main %}
+
+<main>
+    <div class="content_user_profile">
+        <h1>Профиль</h1>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-error">{{ form.non_field_errors }}</div>
+            {% for i in form %}
+            <p><label class="form-label" for="{{ i.id_for_label }}">{{i.label}}: </label>{{ i }}</p>
+            <div class="form-error">{{ i.errors }}</div>
+            {% endfor %}
+
+            <p><button type="submit" class="submit">Сохранить</button></p>
+        </form>
+    </div>
+</main>
+
+{% endblock main %}
+
+{% block footer %} {% endblock footer %}
