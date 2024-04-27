@@ -2,7 +2,7 @@ import os
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
@@ -24,7 +24,7 @@ import random
 import string
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, \
-    UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm, UserProfileForm
+    UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm, UserProfileForm, UserPasswordChangeForm
 
 
 def index(request):
@@ -82,6 +82,12 @@ class UserProfile(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class UserPasswordChange(PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    success_url = reverse_lazy("password_change_done")
+    template_name = "face_app/password_change_form.html"
 
 
 # face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
