@@ -1,6 +1,6 @@
 import os
 
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import PermissionDenied
@@ -60,12 +60,23 @@ def registration(request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)  # создание объекта без сохранения в БД
-            # user.username = compare_faces("face_app/dataset/regina_1.jpg", "face_app/dataset/regina_2.jpg")
-            # data = request.POST.get('email', None)
-            # print(data)
             user.set_password(form.cleaned_data['password'])
             user.save()
-            return render(request, 'face_app/registration_done.html')
+
+            username = request.POST['username']
+            password = request.POST['password']
+
+            # Аутентификация пользователя
+            user = authenticate(request, username=username, password=password)
+
+            if user is not None:
+                # Если пользователь успешно аутентифицирован, выполняем вход
+                login(request, user)
+                url = reverse('user_profile')
+                return HttpResponseRedirect(url)
+            else:
+                url = reverse('login')
+                return HttpResponseRedirect(url)
     else:
         form = RegisterUserForm()
     return render(request, 'face_app/registration.html', {'form': form})
