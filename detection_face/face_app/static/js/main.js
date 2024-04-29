@@ -90,6 +90,13 @@ async function checkCameraAvailability() {
   }
 }
 
+// Открытие блока для распознавание лиц в прямом эфире
+const form_delete_photo = document.getElementById("working_with_images_upload_form");
+// Получаем доступ к элементу input с именем "id"
+let idInput = form_delete_photo.querySelector("input[name='users_id']");
+// Получаем значение атрибута "value"
+let idValue = idInput.value;
+
 turn_on_camera.addEventListener("click", function() {
     video_stream.classList.remove("display_none");
 
@@ -104,24 +111,18 @@ turn_on_camera.addEventListener("click", function() {
     //    console.log('Камера доступна');
       } else {
         errorMessage.style.display = 'block';
+        video_stream.classList.add("display_none");
       }
     });
 });
 
 turn_off_the_camera.addEventListener("click", function() {
-    video_stream.style.display = 'none';
+    video_stream.classList.add("display_none");
     errorMessage.style.display = 'none';
     turn_on_camera.classList.remove("display_none");
     turn_off_the_camera.classList.add("display_none");
-    video_stream.src = "";
+    video_stream.removeAttribute("src");
 });
-
-// Открытие блока для распознавание лиц в прямом эфире
-const form_delete_photo = document.getElementById("form_delete_photo");
-// Получаем доступ к элементу input с именем "id"
-let idInput = form_delete_photo.querySelector("input[name='id']");
-// Получаем значение атрибута "value"
-let idValue = idInput.value;
 
 //Формы для изменения данных распознанных лиц
 const show_form_buttons = document.querySelectorAll(".button_edit_data_photo"); //Кнопка открытия формы

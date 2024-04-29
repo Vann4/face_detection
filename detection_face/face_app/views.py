@@ -195,6 +195,7 @@ def extracting_faces(faces, face_user, users_id, count, random_name, file_extens
         if result[0]:
             FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
                 name=data_face_user.name,
+                description=data_face_user.description,
                 age=data_face_user.age,
                 dominant_gender=data_face_user.dominant_gender,
                 dominant_race=data_face_user.dominant_race)
@@ -281,6 +282,9 @@ def working_with_images(request, users_id):
                                                                                            dominant_emotion=
                                                                                            ResultDeepAnalyze[
                                                                                                'dominant_emotion'])
+                url = reverse('working_with_images', args=[users_id])
+                return HttpResponseRedirect(url)
+
             if UpdateDataPhoto.is_valid():  # Сохранение изменений, которые вносит пользователь через форму
                 id_photo = UpdateDataPhoto.cleaned_data['id_photo']
                 name = UpdateDataPhoto.cleaned_data['name']
