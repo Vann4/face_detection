@@ -101,8 +101,6 @@ class UserPasswordChange(PasswordChangeView):
     template_name = "face_app/password_change_form.html"
 
 
-# face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
 known_face_encodings = []
 known_face_names = []
 
@@ -183,17 +181,16 @@ def live_feed(request, users_id):
     return StreamingHttpResponse(gen(camera, users_id), content_type="multipart/x-mixed-replace;boundary=frame")
 
 
-def extracting_faces(faces, face_user, users_id, count, random_name, file_extension):
+def extracting_faces(faces, face_user, users_id, count, id_photo_user, file_extension):
     face_encoding_user_upload = face_recognition.face_encodings(faces)[0]
-    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
-        face_encodings=face_encoding_user_upload)
+    FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_image_{id_photo_user}{file_extension}").update(face_encodings=face_encoding_user_upload)
 
     for data_face_user in face_user:
         face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
         result = face_recognition.compare_faces([face_encoding],
                                                 face_encoding_user_upload)  # Сравнение кодировок лиц из базы данных с загруженным
         if result[0]:
-            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_{random_name}{file_extension}").update(
+            FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_image_{id_photo_user}{file_extension}").update(
                 name=data_face_user.name,
                 description=data_face_user.description,
                 age=data_face_user.age,
@@ -210,6 +207,7 @@ def get_file_extension(file_path):
 
 
 def working_with_images(request, users_id):
+    global id_photo_user
     face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
 
     form1 = TrimmingPhotoForm(request.POST, request.FILES)
@@ -230,20 +228,22 @@ def working_with_images(request, users_id):
                 face_trim = f"{face.face_photo}"
 
                 file_extension = get_file_extension(face_trim)  # Получение расширения изображения
-                length = 10
-                letters = string.ascii_letters
-                random_name = ''.join(random.choice(letters) for _ in range(length))  # Рандомные буквы английского алфавита
 
                 for face_location in faces_locations:
                     top, right, bottom, left = face_location
 
                     face_img = faces[top:bottom, left:right]
-                    pil_img = Image.fromarray(face_img)
-                    pil_img.save(f"face_app/media/{count}_{random_name}{file_extension}")
-                    face_user_photo = FaceTrimUser(face_photo=f"{count}_{random_name}{file_extension}",
-                                                   users_id=face.users_id)
+                    face_user_photo = FaceTrimUser(face_photo=f"{count}_test{file_extension}", users_id=face.users_id)
                     face_user_photo.save()
-                    extracting_faces(faces, face_user, users_id, count, random_name, file_extension)
+
+                    update_name_photo = FaceTrimUser.objects.filter(face_photo=f"{count}_test{file_extension}", users_id=users_id)
+                    for obj_face_user_photo in update_name_photo:
+                        id_photo_user = obj_face_user_photo.id
+                        FaceTrimUser.objects.filter(users_id=users_id, face_photo=f"{count}_test{file_extension}").update(face_photo=f'{count}_image_{id_photo_user}{file_extension}')
+                        pil_img = Image.fromarray(face_img)
+                        pil_img.save(f"face_app/media/{count}_image_{obj_face_user_photo.id}{file_extension}")
+
+                    extracting_faces(faces, face_user, users_id, count, id_photo_user, file_extension)
                     count += 1
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
@@ -306,7 +306,11 @@ def working_with_images(request, users_id):
 
             if DeletePhoto.is_valid():  # удаление фото
                 id = DeletePhoto.cleaned_data['id']
-                FaceTrimUser.objects.filter(id=id, users_id=users_id).delete()
+                name_photo = FaceTrimUser.objects.filter(id=id, users_id=users_id)
+                for obj_face_name_user_photo in name_photo:
+                    file_path = f'face_app/media/{obj_face_name_user_photo.face_photo}'
+                    os.remove(file_path)
+                name_photo.delete()
                 url = reverse('working_with_images', args=[users_id])
                 return HttpResponseRedirect(url)
 

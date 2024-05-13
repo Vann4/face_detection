@@ -146,3 +146,32 @@ closing_form_buttons.forEach(function(button) { //Закрытие форм
         form_edit_popup_photo.classList.add("display_none");
     });
 });
+
+// Включение лоадера при нажатии на кнопки распознавания лиц
+const button_face_recognition = document.querySelectorAll("#face_recognition"); //Кнопки распознавания лиц
+console.log(button_face_recognition)
+
+button_face_recognition.forEach(function(button) { //Закрытие форм
+    button.addEventListener("click", function() {
+        let loader = document.getElementById("loader");
+        let overlay = document.getElementById("overlay");
+
+        // Показываем лоадер и затемнение
+        loader.style.display = "block";
+        overlay.style.display = "block";
+    });
+});
+
+
+// Сохранение позиции прокрутки
+window.onload = function() {
+    let scrollPos = sessionStorage.getItem('scrollPos');
+    if (scrollPos) {
+        window.scrollTo(0, scrollPos);
+        sessionStorage.removeItem('scrollPos');
+    }
+};
+
+window.onbeforeunload = function() {
+    sessionStorage.setItem('scrollPos', window.scrollY);
+};
