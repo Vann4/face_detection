@@ -30,9 +30,9 @@ class FaceTrimUser(models.Model):
 
 
 class Feedback(models.Model):
-    name = models.TextField()
-    descriptions = models.TextField()
-    email = models.TextField()
+    name = models.TextField(verbose_name="Имя")
+    descriptions = models.TextField(verbose_name="Описание")
+    email = models.TextField(verbose_name="Е-мейл")
 
     class Meta:
         verbose_name = 'Обратная связь'

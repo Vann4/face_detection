@@ -23,7 +23,7 @@ class RegisterUserForm(forms.ModelForm):
         model = get_user_model()
         fields = ['username', 'email', 'first_name', 'last_name', 'password', 'password2']
         labels = {
-            'email': 'E-mail',
+            'email': 'Е-мейл',
             'first_name': 'Имя',
             'last_name': 'Фамилия',
         }
@@ -37,14 +37,14 @@ class RegisterUserForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data['email']
         if get_user_model().objects.filter(email=email).exists():
-            raise forms.ValidationError("Такой E-mail уже существует!")
+            raise forms.ValidationError("Такой Е-мейл уже существует!")
         return email
 
 
 class FeedbackForm(forms.ModelForm):
     name = forms.CharField(label='Имя')
     descriptions = forms.CharField(label='Описание')
-    email = forms.CharField(label='Почта', widget=forms.TextInput(attrs={'class': 'form-input'}))
+    email = forms.CharField(label='Е-мейл', widget=forms.TextInput(attrs={'class': 'form-input'}))
 
     class Meta:
         model = Feedback
@@ -87,7 +87,7 @@ class FilterForDataOutputForm(forms.Form):
 
 class UserProfileForm(forms.ModelForm):
     username = forms.CharField(disabled=True, label="Логин", widget=forms.TextInput(attrs={'class': 'form-input'}))
-    email = forms.CharField(disabled=True, label="Почта", widget=forms.TextInput(attrs={'class': 'form-input'}))
+    email = forms.CharField(disabled=True, label="Е-мейл", widget=forms.TextInput(attrs={'class': 'form-input'}))
 
     class Meta:
         model = get_user_model()
