@@ -322,13 +322,16 @@ def working_with_images(request, users_id):
                 dominant_race_filter = FilterForDataOutput.cleaned_data['dominant_race_filter']
                 dominant_emotion_filter = FilterForDataOutput.cleaned_data['dominant_emotion_filter']
                 download_date_filter = FilterForDataOutput.cleaned_data['download_date_filter']
+                start_date = FilterForDataOutput.cleaned_data['start_date']
+                end_date = FilterForDataOutput.cleaned_data['end_date']
 
                 filtered_face_trim_user = FaceTrimUser.objects.filter(
                     Q(name=name_filter) | Q(description=description_filter) | Q(age=age_filter)
                     | Q(dominant_gender=dominant_gender_filter)
                     | Q(dominant_race=dominant_race_filter)
                     | Q(dominant_emotion=dominant_emotion_filter)
-                    | Q(download_date=download_date_filter),
+                    | Q(download_date=download_date_filter)
+                    | Q(download_date__range=(start_date, end_date)),
                     users_id=users_id)
 
                 data = {

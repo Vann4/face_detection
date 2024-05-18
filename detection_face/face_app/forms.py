@@ -13,6 +13,13 @@ class LoginUserForm(AuthenticationForm):
         model = get_user_model()
         fields = ['username', 'password']
 
+    def __init__(self, *args, **kwargs):
+        super(LoginUserForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-input'})
+            # Переопределяем метод label_tag для добавления класса к метке
+            field.label_tag = lambda id, label=field.label, cls='form-label-login': f'<label for="{id}" class="{cls}">{label}</label>'
+
 
 class RegisterUserForm(forms.ModelForm):
     username = forms.CharField(label="Логин")
@@ -83,6 +90,8 @@ class FilterForDataOutputForm(forms.Form):
     dominant_race_filter = forms.CharField(label="Раса", required=False)
     dominant_emotion_filter = forms.CharField(label="Эмоция", required=False)
     download_date_filter = forms.DateField(label="Дата загрузки", required=False)
+    start_date = forms.DateField(label="Начало", required=False)
+    end_date = forms.DateField(label="Конец", required=False)
 
 
 class UserProfileForm(forms.ModelForm):
