@@ -535,6 +535,12 @@ footer{
     color: #FFBF40;
 }
 
+/* авторизация */
+.form_label{
+    font-size: 1.2em;
+}
+/* конец авторизации */
+
 /* профиль пользователя */
 .content_user_profile{
     display: flex;

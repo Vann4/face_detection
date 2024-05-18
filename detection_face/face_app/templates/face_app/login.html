@@ -11,7 +11,10 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        <p><label for="id_username" class="form_label">Логин:</label>
+            <input type="text" name="username" class="form-input" maxlength="150" required="" id="id_username"></p>
+        <p><label for="id_password" class="form_label">Пароль:</label>
+            <input type="password" name="password" class="form-input" required="" id="id_password"></p>
         <p><button type="submit" class="submit">Войти</button></p>
     </form>
 </main>
