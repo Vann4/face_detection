@@ -31,16 +31,16 @@
 
                 <label class="id_dominant_gender">Пол:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_gender" required class="edit_list_data_face" size="2">
+                    <select name="dominant_gender" required class="edit_list_data_face">
                         <option name="dominant_gender" selected value="{{ i.dominant_gender }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_gender }}</option>
                         <option name="dominant_gender" value="Мужчина">Мужчина</option>
                         <option name="dominant_gender" value="Женщина">Женщина</option>
                     </select>
-                </div>
+                </div><br>
 
                 <label class="id_dominant_race">Раса:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_race" required class="edit_list_data_face" size="3">
+                    <select name="dominant_race" required class="edit_list_data_face">
                         <option name="dominant_race" selected value="{{ i.dominant_race }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_race }}</option>
                         <option name="dominant_race" value="Индейцы">Индейцы</option>
                         <option name="dominant_race" value="Азиаты">Азиаты</option>
@@ -49,11 +49,11 @@
                         <option name="dominant_race" value="Средневосточная">Средневосточная</option>
                         <option name="dominant_race" value="Европейцы">Европейцы</option>
                     </select>
-                </div>
+                </div><br>
 
                 <label class="id_dominant_emotion">Эмоция:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_emotion" required class="edit_list_data_face" size="3">
+                    <select name="dominant_emotion" required class="edit_list_data_face">
                         <option name="dominant_emotion" selected value="{{ i.dominant_emotion }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_emotion }}</option>
                         <option name="dominant_emotion" value="Счастье">Счастье</option>
                         <option name="dominant_emotion" value="Грусть">Грусть</option>
@@ -106,16 +106,16 @@
 
                 <label class="id_dominant_gender">Пол:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_gender" required class="edit_list_data_face" size="2">
+                    <select name="dominant_gender" required class="edit_list_data_face">
                         <option name="dominant_gender" selected value="{{ i.dominant_gender }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_gender }}</option>
                         <option name="dominant_gender" value="Мужчина">Мужчина</option>
                         <option name="dominant_gender" value="Женщина">Женщина</option>
                     </select>
-                </div>
+                </div><br>
 
                 <label class="id_dominant_race">Раса:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_race" required class="edit_list_data_face" size="3">
+                    <select name="dominant_race" required class="edit_list_data_face">
                         <option name="dominant_race" selected value="{{ i.dominant_race }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_race }}</option>
                         <option name="dominant_race" value="Индейцы">Индейцы</option>
                         <option name="dominant_race" value="Азиаты">Азиаты</option>
@@ -124,11 +124,11 @@
                         <option name="dominant_race" value="Средневосточная">Средневосточная</option>
                         <option name="dominant_race" value="Европейцы">Европейцы</option>
                     </select>
-                </div>
+                </div><br>
 
                 <label class="id_dominant_emotion">Эмоция:</label><br>
                 <div class="custom-select-edit-data-photo margin_bottom">
-                    <select name="dominant_emotion" required class="edit_list_data_face" size="3">
+                    <select name="dominant_emotion" required class="edit_list_data_face">
                         <option name="dominant_emotion" selected value="{{ i.dominant_emotion }}" {% if i.pk == selected_emotion_pk %} selected {% endif %}>{{ i.dominant_emotion }}</option>
                         <option name="dominant_emotion" value="Счастье">Счастье</option>
                         <option name="dominant_emotion" value="Грусть">Грусть</option>
@@ -197,22 +197,22 @@
 
                     <div class="name_filter">
                         <label for="name_filter" class="id_age">Имя:</label><br>
-                        <input type="text" id="name_filter" name="name_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Имя">
+                        <input type="text" id="name_filter" name="name_filter" value="?" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Имя">
                     </div>
 
                     <div class="description_filter">
                         <label for="description_filter" class="id_age">Описание:</label><br>
-                        <input type="text" id="description_filter" name="description_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Описание">
+                        <input type="text" id="description_filter" name="description_filter" value="?" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Описание">
                     </div>
 
                     <div class="age_filter">
                         <label for="age_filter" class="id_age">Возраст:</label><br>
-                        <input type="number" id="age_filter" name="age_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Возраст">
+                        <input type="number" id="age_filter" name="age_filter" value="0" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Возраст">
                     </div>
 
                     <div class="dominant_gender_filter">
                         <label class="id_dominant_race">Пол:</label><br>
-                        <select name="dominant_gender_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                        <select name="dominant_gender_filter" required class="edit_list_data_face" style="margin: 0px 10px 10px 0px;">
                             <option name="dominant_gender_filter" selected>---------</option>
                             <option name="dominant_gender_filter" value="Мужчина">Мужчина</option>
                             <option name="dominant_gender_filter" value="Женщина">Женщина</option>
@@ -221,7 +221,7 @@
 
                     <div class="dominant_race_filter">
                         <label class="id_dominant_race">Раса:</label><br>
-                        <select name="dominant_race_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                        <select name="dominant_race_filter" required class="edit_list_data_face" style="margin: 0px 10px 10px 0px;">
                             <option name="dominant_race_filter" selected>---------</option>
                             <option name="dominant_race_filter" value="Индейцы">Индейцы</option>
                             <option name="dominant_race_filter" value="Азиаты">Азиаты</option>
@@ -234,7 +234,7 @@
 
                     <div class="dominant_emotion_filter">
                         <label class="id_dominant_race">Эмоция:</label><br>
-                        <select name="dominant_emotion_filter" required class="edit_list_data_face" size="3" style="margin: 0px 10px 10px 0px;">
+                        <select name="dominant_emotion_filter" class="edit_list_data_face" style="margin: 0px 10px 10px 0px;">
                             <option name="dominant_emotion_filter" selected value="">---------</option>
                             <option name="dominant_emotion_filter" value="Счастье">Счастье</option>
                             <option name="dominant_emotion_filter" value="Грусть">Грусть</option>
@@ -247,20 +247,22 @@
                     </div>
 
                     <div class="download_date_filter">
-                        <label for="download_date_filter" class="id_age">Дата загрузки:</label><br>
-                        <input type="date" id="download_date_filter" name="download_date_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Дата">
-                    </div>
+                        <div class="download_date">
+                            <label for="download_date_filter" class="id_download_date">Дата загрузки:</label><br>
+                            <input type="date" id="download_date_filter" name="download_date_filter" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Дата">
+                        </div>
 
-                    <div class="download_date_filter">
-                        <label for="start_date" class="id_age">Начало:</label><br>
-                        <input type="date" id="start_date" name="start_date" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Начало">
-                    </div>
+                        <div class="spacer"></div>
+                        <div class="start_date">
+                            <label for="start_date" class="id_start_date">От:</label><br>
+                            <input type="date" id="start_date" name="start_date" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Начало">
+                        </div>
 
-                    <div class="download_date_filter">
-                        <label for="end_date" class="id_age">Конец:</label><br>
-                        <input type="date" id="end_date" name="end_date" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Конец">
-                    </div>
-
+                        <div class="end_date">
+                            <label for="end_date" class="id_end_date">До:</label><br>
+                            <input type="date" id="end_date" name="end_date" class="form-input" style="margin: 0px 10px 10px 0px;" placeholder="Конец">
+                        </div>
+                    </div> <!-- class="download_date_filter" -->
 
                     <div class="margin_bottom">
                         <button type="submit" class="submit">Применить</button>

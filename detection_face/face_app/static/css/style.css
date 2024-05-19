@@ -322,7 +322,12 @@ main h1{
 }
 
 .download_date_filter{
+    display: flex;
     width: 100%;
+}
+
+.spacer {
+    flex-grow: 1;
 }
 
 .filter_reset_color a{
@@ -332,8 +337,8 @@ main h1{
 .filter_tag_p{
     font-size: 1.3em;
 }
-
 /* Конец фильтрации изображений */
+
 
 .user_image_trim{
     width: 80vw;
@@ -360,15 +365,15 @@ main h1{
     font-size: 1.1em;
 }
 
-.custom-select {
+.custom-select, .custom-select-edit-data-photo{
     position: relative;
     display: inline-block;
 }
 
-.custom-select:after {
+.custom-select:after, .custom-select-edit-data-photo:after{
     content: '\25BC'; /* стрелочка вниз (▼) */
     position: absolute;
-    top: 20px;
+    top: 23px;
     right: 2px;
     transform: translateY(-50%);
     pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
@@ -376,6 +381,7 @@ main h1{
 
 .custom-select select, .custom-select-edit-data-photo select {
     cursor: pointer;
+    font-size: 1em;
     padding: 10px 20px 10px 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -481,7 +487,8 @@ main h1{
     font-size: 1.2em;
 }
 
-.id_name, .id_description, .id_age, .id_dominant_gender, .id_dominant_race, .id_dominant_emotion, .id_email{
+.id_name, .id_description, .id_age, .id_dominant_gender, .id_dominant_race, .id_dominant_emotion, .id_email,
+.id_download_date, .id_start_date, .id_end_date{
     font-size: 1.2em;
 }
 
@@ -490,10 +497,42 @@ main h1{
 }
 
 /* Список для изменений данных о лицах */
-.edit_list_data_face{
+/*.edit_list_data_face{
     width: 250px;
     font-size: 1.2em;
+}*/
+
+.dominant_gender_filter, .dominant_race_filter, .dominant_emotion_filter{
+    position: relative;
+    width: 264px;
+    font-size: 1.1em;
 }
+
+.dominant_gender_filter:after, .dominant_race_filter:after, .dominant_emotion_filter:after{
+    content: '\25BC'; /* стрелочка вниз (▼) */
+    position: absolute;
+    top: 48px;
+    right: 13px;
+    transform: translateY(-50%);
+    pointer-events: none; /* события мыши проходят сквозь псевдоэлемент */
+}
+
+.dominant_gender_filter select, .dominant_race_filter select, .dominant_emotion_filter select{
+    width: 255px;
+    cursor: pointer;
+    font-size: 1em;
+    padding: 10px 20px 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    appearance: none; /* убираем стандартные стрелки */
+}
+
+.dominant_gender_filter select:focus, .dominant_race_filter select:focus, .dominant_emotion_filter select:focus{
+    outline: none; /* убираем стандартную рамку при фокусе */
+}
+/* Конец списока для изменений данных о лицах */
+
 
 footer{
 	width: 100%;
@@ -728,6 +767,10 @@ footer{
         text-align: center;
     }
 
+    .download_date_filter{
+        display: block;
+        width: 100%;
+    }
 } /*@media (max-width: 1000px)*/
 
 @media (max-width: 700px) {
