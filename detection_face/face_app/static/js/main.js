@@ -164,7 +164,6 @@ closing_form_buttons.forEach(function(button) { //Закрытие форм
 
 // Включение лоадера при нажатии на кнопки распознавания лиц
 const button_face_recognition = document.querySelectorAll("#face_recognition"); //Кнопки распознавания лиц
-console.log(button_face_recognition)
 
 button_face_recognition.forEach(function(button) { //Закрытие форм
     button.addEventListener("click", function() {
