@@ -22,6 +22,21 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
+// Ajax-запрос для обратной связи
+$('#feedbackForm').submit(function(event){
+    event.preventDefault();
+    $.ajax({
+        url: '',
+        type: 'POST',
+        data: $(this).serialize(),
+        success:function(response){
+            alert('Ваша заявка успешно отправлена, ответ поступит в течение 24 часов.');
+        },
+        error:function(response){
+            alert('Что-то пошло не так, попробуйте еще раз.')
+        }
+    })
+});
 
 const hamb = document.querySelector("#hamb");
 const popup = document.querySelector("#popup");

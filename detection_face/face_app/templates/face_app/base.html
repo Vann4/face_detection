@@ -18,7 +18,7 @@
 <div class="display_none_container_popup_feedback" id="container_popup_feedback">
     <div class="popup_feedback" id="popup_feedback_class">
 
-        <form class="popup_feedback_form" method="post" action="{% url 'index' %}">
+        <form id="feedbackForm" class="popup_feedback_form" method="post" action="{% url 'index' %}">
             {% csrf_token %}
             <div id="close-button">
                 <h2>Обратная связь с разработчиком</h2>
@@ -131,9 +131,8 @@
 {% endblock footer %}
 
 {% block scripts %}
-
 <script src="{% static 'js/main.js' %}"></script>
-
+<script src="{% static 'js/jquery-3.7.0.js' %}"></script>
 {% endblock scripts %}
 </body>
 </html>
