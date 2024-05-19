@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model, authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import PermissionDenied
+from django.core.files.base import ContentFile
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
@@ -17,11 +18,11 @@ from pathlib import Path
 from deepface import DeepFace
 import numpy as np
 import cv2
+import time
+
 from django.http import StreamingHttpResponse
 from django.views.decorators import gzip
 
-import random
-import string
 
 from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoForm, AgeGenderRaceForm, \
     UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm, UserProfileForm, UserPasswordChangeForm
@@ -103,6 +104,7 @@ class UserPasswordChange(PasswordChangeView):
 
 known_face_encodings = []
 known_face_names = []
+known_face_ids = []
 
 face_locations = []
 face_encodings = []
@@ -111,10 +113,12 @@ face_names = []
 
 def gen(camera, users_id):
     face_user = FaceTrimUser.objects.filter(users_id=users_id).order_by('id')
+    users_id = User.objects.get(id=users_id)
     for data_face_user in face_user:
         face_encoding = np.frombuffer(data_face_user.face_encodings, dtype=np.float64)
         known_face_encodings.append(face_encoding)
         known_face_names.append(data_face_user.name)
+        known_face_ids.append(data_face_user.id)
 
     process_this_frame = True
     while True:
@@ -134,16 +138,53 @@ def gen(camera, users_id):
                 face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
 
                 face_names = []
-                for face_encoding in face_encodings:
+                for face_encoding, face_location in zip(face_encodings, face_locations):
                     # Проверить, совпадает ли лицо с известным лицом (лицами).
                     matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                     name = "Неизвестно"
+                    face_id = None
 
                     # Или вместо этого использовать известное лицо с наименьшим расстоянием до нового лица
                     face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-                    best_match_index = np.argmin(face_distances)
+                    best_match_index = int(np.argmin(face_distances))
                     if matches[best_match_index]:
                         name = known_face_names[best_match_index]
+                        face_id = known_face_ids[best_match_index]
+
+                    # Масштабирование местоположение лиц
+                    top, right, bottom, left = face_location
+                    top *= 4
+                    right *= 4
+                    bottom *= 4
+                    left *= 4
+
+                    # Извлечение изображения лица
+                    face_image = frame[top:bottom, left:right]
+                    _, buffer = cv2.imencode('.jpg', face_image)
+                    face_image_file = ContentFile(buffer.tobytes())
+
+                    if face_id is not None and FaceTrimUser.objects.filter(id=face_id).exists():
+                        # Если лицо известно, сохранить запись с известной информацией
+                        matched_face_user = FaceTrimUser.objects.get(id=face_id)
+                        face_record = FaceTrimUser(
+                            face_encodings=face_encoding.tobytes(),
+                            name=name,
+                            description=matched_face_user.description,
+                            age=matched_face_user.age,
+                            dominant_gender=matched_face_user.dominant_gender,
+                            dominant_race=matched_face_user.dominant_race,
+                            dominant_emotion=matched_face_user.dominant_emotion,
+                            users_id=users_id
+                        )
+                    else:
+                        # Если лицо неизвестно, создать новую запись с кодировкой лица
+                        face_record = FaceTrimUser(
+                            face_encodings=face_encoding.tobytes(),
+                            name=name,
+                            users_id=users_id
+                        )
+                    face_record.face_photo.save(f'face_{users_id}_{int(time.time())}.jpg', face_image_file)
+                    face_record.save()
 
                     face_names.append(name)
 
