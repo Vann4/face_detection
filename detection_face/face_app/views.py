@@ -53,7 +53,7 @@ class LoginUser(LoginView):
     extra_context = {'title': "Авторизация"}
 
     def get_success_url(self):
-        return reverse_lazy('index')
+        return reverse_lazy('user_profile')
 
 
 def registration(request):

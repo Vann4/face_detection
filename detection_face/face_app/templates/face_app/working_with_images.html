@@ -170,6 +170,9 @@
                         {% for i in face_user %}
                             <option name="path" value="{{ i.face_photo }}">{{i.face_photo}}</option>
                         {% endfor %}
+                        {% for ii in filtered_face_trim_user %}
+                            <option name="path" value="{{ ii.face_photo }}">{{ii.face_photo}}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <p><button type="submit" class="submit" id="face_recognition">Узнать</button></p>
