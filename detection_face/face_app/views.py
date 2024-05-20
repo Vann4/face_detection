@@ -121,6 +121,7 @@ def gen(camera, users_id):
         known_face_ids.append(data_face_user.id)
 
     process_this_frame = True
+    last_save_time = time.time()
     while True:
         ret, frame = camera.read()
         if not ret:
@@ -183,11 +184,11 @@ def gen(camera, users_id):
                             name=name,
                             users_id=users_id
                         )
-                    face_record.face_photo.save(f'face_{users_id}_{int(time.time())}.jpg', face_image_file)
+                    record = FaceTrimUser.objects.order_by('-id').first()
+                    face_record.face_photo.save(f'face_{record.id}.jpg', face_image_file)
                     face_record.save()
 
                     face_names.append(name)
-
             process_this_frame = not process_this_frame
 
             # Отображение результатов
