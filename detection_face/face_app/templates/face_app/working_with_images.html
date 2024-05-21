@@ -151,10 +151,10 @@
 <main>
     <div class="content">
         <div class="form_trim">
-            <p class="working_with_images_p">Распознать лица на изображении:</p>
+            <p class="working_with_images_p">Распознавание лиц на изображении:</p>
             <form class="working_with_images_form" id="working_with_images_upload_form" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <p><tr><th><label for="face_photo" style="font-size: 1.2em;">Загрузить изображение: </label></th><td>
+                <p><tr><th><label for="face_photo" style="font-size: 1.2em;">Загрузите изображение: </label></th><td>
                 <input type="file" name="face_photo" required id="face_photo" style="font-size: 1em;"></td></tr>
                 <p><input type="text" name="users_id" value="{{user.id}}" class="display_none"></p>
                 <p><button type="submit" class="submit" id="face_recognition">Распознать</button></p>
