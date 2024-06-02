@@ -6,7 +6,7 @@ from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
 from django.db.models import Q
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import UpdateView
@@ -28,19 +28,19 @@ from .forms import LoginUserForm, RegisterUserForm, FeedbackForm, TrimmingPhotoF
     UpdateDataPhotoForm, DeletePhotoForm, FilterForDataOutputForm, UserProfileForm, UserPasswordChangeForm
 
 
-def index(request):
+def feedback(request):
     if request.method == "POST":
         form = FeedbackForm(request.POST)
         if form.is_valid():
             feedback = form.save(commit=False)  # создание объекта без сохранения в БД
             feedback.save()
-    else:
-        form = FeedbackForm()
+            return JsonResponse({'message': 'Данные успешно сохранены'}, status=200)
+        else:
+            return JsonResponse({'message': 'Что-то пошло не так'}, status=400)
 
-    data = {
-        'form': form,
-    }
-    return render(request, 'face_app/index.html', data)
+
+def index(request):
+    return render(request, 'face_app/index.html')
 
 
 def page_not_found(request, exception):

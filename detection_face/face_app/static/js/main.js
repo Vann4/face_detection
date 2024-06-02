@@ -26,7 +26,7 @@ window.addEventListener('keydown', (e) => {
 $('#feedbackForm').submit(function(event){
     event.preventDefault();
     $.ajax({
-        url: '',
+        url: '/feedback/',
         type: 'POST',
         data: $(this).serialize(),
         success:function(response){
