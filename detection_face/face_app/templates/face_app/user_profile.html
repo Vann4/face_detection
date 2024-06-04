@@ -18,7 +18,11 @@
             <p><button type="submit" class="submit">Сохранить</button></p>
         </form>
         <span class="span_user_profile"></span>
-        <p class="user_profile_tag_p"><a href="{% url 'password_change' %}" class="submit">Сменить пароль</a></p>
+        <p class="user_profile_tag_p">
+            <button type="submit" class="submit">
+                <a href="{% url 'password_change' %}">Сменить пароль</a>
+            </button>
+        </p>
     </div>
 </main>
 
