@@ -402,3 +402,7 @@ def working_with_images(request, users_id):
         return render(request, 'face_app/working_with_images.html', data)
     else:
         raise PermissionDenied
+
+
+def stats(request):
+    return render(request, 'face_app/stats.html')

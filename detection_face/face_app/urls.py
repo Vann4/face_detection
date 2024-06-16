@@ -15,4 +15,5 @@ urlpatterns = [
     path('password-change/done/', PasswordChangeDoneView.as_view(template_name="face_app/password_change_done.html"), name="password_change_done"),
     path('working_with_images/<int:users_id>/', views.working_with_images, name='working_with_images'),
     path('live_feed/<int:users_id>/', views.live_feed, name='live_feed'),
+    path('stats/', views.stats, name='stats'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

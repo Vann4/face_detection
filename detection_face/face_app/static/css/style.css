@@ -604,6 +604,24 @@ footer{
 }
 /* конец профиля пользователя */
 
+.stats {
+    width: 50%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-collapse: collapse;
+    font-size:1.3em;
+}
+stats, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+
 @media (max-width: 1024px) {
 
     header{
