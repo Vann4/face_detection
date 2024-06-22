@@ -163,7 +163,7 @@
 
         <div class="age_gender_race">
             <p class="working_with_images_p">Выберите изображение, чтобы узнать примерный возраст, пол, расу и эмоцию:</p>
-            <form class="working_with_images_form" method="post">
+            <form class="working_with_images_form" id="age_gender_race" method="post">
                 {% csrf_token %}
                 <div class="custom-select">
                     <select name="path" class="select_face_photo">
@@ -175,7 +175,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <p><button type="submit" class="submit" id="face_recognition">Узнать</button></p>
+                <p><button type="submit" class="submit" id="recognize">Узнать</button></p>
             </form>
         </div><!-- class="age_gender_race" -->
 

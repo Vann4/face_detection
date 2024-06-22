@@ -163,19 +163,36 @@ closing_form_buttons.forEach(function(button) { //Закрытие форм
 });
 
 // Включение лоадера при нажатии на кнопки распознавания лиц
-const button_face_recognition = document.querySelectorAll("#face_recognition"); //Кнопки распознавания лиц
+const form_upload_img = document.getElementById('working_with_images_upload_form');
+const file_input_img = document.getElementById('face_photo');
 
-button_face_recognition.forEach(function(button) { //Закрытие форм
-    button.addEventListener("click", function() {
+form_upload_img.addEventListener('submit', function(event) {
+    if (!file_input_img.files.length) {
+    } else {
         let loader = document.getElementById("loader");
         let overlay = document.getElementById("overlay");
 
-        // Показываем лоадер и затемнение
+        // Показ лоадера и затемнение
         loader.style.display = "block";
         overlay.style.display = "block";
-    });
+    }
 });
 
+const form_age_gender_race = document.getElementById('age_gender_race');
+const select = document.querySelector('.select_face_photo');
+
+form_age_gender_race.addEventListener('submit', function(event) {
+    if (select.value === '') {
+    alert('Пожалуйста, выберите изображение.');
+    } else {
+        let loader = document.getElementById("loader");
+        let overlay = document.getElementById("overlay");
+
+        // Показ лоадера и затемнение
+        loader.style.display = "block";
+        overlay.style.display = "block";
+    }
+});
 
 // Сохранение позиции прокрутки
 window.onload = function() {
