@@ -378,3 +378,59 @@ def working_with_images(request, users_id):
             # # Рисование прямоугольников вокруг обнаруженных лиц
             # for (x, y, w, h) in faces:
             #     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+
+=====================================================================================================================
+
+
+//const usersId = idInput.value;
+//console.log(usersId)
+//let updateInterval;
+//
+//function updateFaces() {
+//    $.ajax({
+//        url: `/get_new_faces/${usersId}/`,
+//        type: "GET",
+//        dataType: "json",
+//        success: function(data) {
+//            let facesBlock = $('#user_image_trim');
+//            facesBlock.empty();
+//            data.faces.forEach(function(face) {
+//                let faceHtml = `
+//                    <div class="user_img">
+//                        <img src="${face.face_photo_url}" alt="">
+//                        <p class="working_with_images_image_tag_p">Изображение: ${face.face_photo_url}</p>
+//                        <p class="working_with_images_image_tag_p">Имя: ${face.name}</p>
+//                        <p class="working_with_images_image_tag_p">Описание: ${face.description}</p>
+//                        <p class="working_with_images_image_tag_p">Возраст: ${face.age}</p>
+//                        <p class="working_with_images_image_tag_p">Пол: ${face.dominant_gender}</p>
+//                        <p class="working_with_images_image_tag_p">Раса: ${face.dominant_race}</p>
+//                        <p class="working_with_images_image_tag_p">Эмоция: ${face.dominant_emotion}</p>
+//                        <p class="working_with_images_image_tag_p">Дата загрузки: ${face.download_date}</p>
+//                        <p class="content_center">
+//                            <button class="submit button_edit_data_photo" data-form-id="${face.id}">Редактировать</button>
+//                        </p>
+//                        <form method="post" id="form_delete_photo">
+//                            <input type="number" name="id" value="${face.id}" class="display_none">
+//                            <p class="content_center">
+//                                <button type="submit" class="submit">Удалить</button>
+//                            </p>
+//                        </form>
+//                    </div>`;
+//                facesBlock.append(faceHtml);
+//            });
+//        }
+//    });
+//}
+//
+//$(document).ready(function() {
+//    $('#turn_on_camera').click(function() {
+//        if (!updateInterval) {
+//            updateInterval = setInterval(updateFaces, 1000);
+//        }
+//    });
+//
+//    $('#turn_off_the_camera').click(function() {
+//        clearInterval(updateInterval);
+//        updateInterval = null;
+//    });
+//});

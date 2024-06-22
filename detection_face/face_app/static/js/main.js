@@ -59,7 +59,7 @@ function hambHandler(e) {
     renderPopup();
 }
 
-// Здесь мы рендерим элементы в наш попап
+// Рендерим элементы в попап
 function renderPopup() {
     popup.appendChild(menu);
     popup.appendChild(auth);

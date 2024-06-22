@@ -72,6 +72,7 @@
                         <li><a href="{% url 'working_with_images' user.id %}">Распознавание лиц</a></li>
                     {% else %}
                     {% endif %}
+                    <li><a href="{% url 'stats' %}">Сводная таблица</a></li>
                 </ul>
                 <div class="auth">
                     {% if user.is_authenticated %}

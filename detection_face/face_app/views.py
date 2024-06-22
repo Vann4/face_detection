@@ -121,7 +121,6 @@ def gen(camera, users_id):
         known_face_ids.append(data_face_user.id)
 
     process_this_frame = True
-    last_save_time = time.time()
     while True:
         ret, frame = camera.read()
         if not ret:
@@ -141,16 +140,24 @@ def gen(camera, users_id):
                 face_names = []
                 for face_encoding, face_location in zip(face_encodings, face_locations):
                     # Проверить, совпадает ли лицо с известным лицом (лицами).
-                    matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                    # matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
                     name = "Неизвестно"
                     face_id = None
 
                     # Или вместо этого использовать известное лицо с наименьшим расстоянием до нового лица
-                    face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
-                    best_match_index = int(np.argmin(face_distances))
-                    if matches[best_match_index]:
-                        name = known_face_names[best_match_index]
-                        face_id = known_face_ids[best_match_index]
+                    # face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                    # best_match_index = int(np.argmin(face_distances))
+                    # if matches[best_match_index]:
+                    #     name = known_face_names[best_match_index]
+                    #     face_id = known_face_ids[best_match_index]
+
+                    if known_face_encodings:
+                        matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
+                        face_distances = face_recognition.face_distance(known_face_encodings, face_encoding)
+                        best_match_index = int(np.argmin(face_distances))
+                        if matches[best_match_index]:
+                            name = known_face_names[best_match_index]
+                            face_id = known_face_ids[best_match_index]
 
                     # Масштабирование местоположение лиц
                     top, right, bottom, left = face_location
@@ -184,11 +191,19 @@ def gen(camera, users_id):
                             name=name,
                             users_id=users_id
                         )
-                    record = FaceTrimUser.objects.order_by('-id').first()
-                    face_record.face_photo.save(f'face_{record.id}.jpg', face_image_file)
-                    face_record.save()
 
-                    face_names.append(name)
+                    record = FaceTrimUser.objects.order_by('-id').first()
+                    print(record)
+                    if record is None:
+                        face_record.face_photo.save(f'face_{1}.jpg', face_image_file)
+                        face_record.save()
+                        face_names.append(name)
+                    else:
+                        face_record.face_photo.save(f'face_{record.id + 1}.jpg', face_image_file)
+                        face_record.save()
+                        face_names.append(name)
+                    # Задержка перед сохранением записи
+                    time.sleep(0.7)
             process_this_frame = not process_this_frame
 
             # Отображение результатов
