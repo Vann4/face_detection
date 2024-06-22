@@ -193,7 +193,6 @@ def gen(camera, users_id):
                         )
 
                     record = FaceTrimUser.objects.order_by('-id').first()
-                    print(record)
                     if record is None:
                         face_record.face_photo.save(f'face_{1}.jpg', face_image_file)
                         face_record.save()
