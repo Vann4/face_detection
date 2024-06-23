@@ -434,3 +434,5 @@ def working_with_images(request, users_id):
 //        updateInterval = null;
 //    });
 //});
+
+pg_ctl -D "C:\Program Files\PostgreSQL\16\data" start
