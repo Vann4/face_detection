@@ -193,16 +193,11 @@ def gen(camera, users_id):
                         )
 
                     record = FaceTrimUser.objects.order_by('-id').first()
-                    if record is None:
-                        face_record.face_photo.save(f'face_{1}.jpg', face_image_file)
-                        face_record.save()
-                        face_names.append(name)
-                    else:
-                        face_record.face_photo.save(f'face_{record.id + 1}.jpg', face_image_file)
-                        face_record.save()
-                        face_names.append(name)
+                    face_record.face_photo.save(f'face_{record.id + 1}.jpg', face_image_file)
+                    face_record.save()
+                    face_names.append(name)
                     # Задержка перед сохранением записи
-                    time.sleep(0.7)
+                    time.sleep(0.5)
             process_this_frame = not process_this_frame
 
             # Отображение результатов
